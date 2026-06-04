@@ -1,0 +1,1 @@
+Produce a validated service incident record for checkout-service: symptom is "returning HTTP 503s"; it depends on PostgreSQL and Redis. The record MUST contain exactly the keys service, symptom, dependencies, candidate_causes, and the two lists MUST be non-empty lists of strings - validate the record before answering.

@@ -1,0 +1,39 @@
+{
+  "node_id": "n:3",
+  "skill": "researcher",
+  "status": "complete",
+  "inputs": [],
+  "result": {
+    "success": true,
+    "agent_name": "researcher",
+    "output": {
+      "question": "Investigate search-service: timeouts, dependencies: Elasticsearch, PostgreSQL. Identify current health status and recent error logs.",
+      "sources": [
+        {
+          "url": "https://pulse.support/kb/elasticsearch-timeout-exception",
+          "title": "Elasticsearch Timeout exception - Common Causes & Fixes"
+        }
+      ],
+      "findings": "Search-service timeouts are typically caused by layer-specific failures. Client-side timeouts often manifest as SocketTimeoutException, typically due to slow queries or insufficient client timeout configurations. Server-side timeouts, such as ReceiveTimeoutTransportException, point to inter-node network latency, excessive JVM GC pauses, or overloaded thread pools on the Elasticsearch nodes.\n\nOperational health should be verified by checking Elasticsearch thread pool stats (specifically rejected tasks or queue lengths) and JVM GC logs. For PostgreSQL dependencies, timeouts often stem from connection pool exhaustion or long-running queries locking resources required by the search-service. Analyzing logs for specific exception classes is essential to isolate whether the failure occurs at the network, query-execution, or resource-saturation layer.",
+      "candidate_causes": [
+        "elasticsearch_unavailable",
+        "postgresql_unavailable",
+        "slow_query",
+        "jvm_gc_pause",
+        "thread_pool_saturation",
+        "connection_pool_exhausted",
+        "network_latency"
+      ]
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 24.070616960525513,
+    "provider": "gemini",
+    "error": null
+  },
+  "prompt_sent": "You are the Researcher skill. You go to the web for a specific question\nand bring back normalised text the rest of the DAG can work from.\n\nYour tool surface is two MCP tools: `web_search(query, max_results)` and\n`fetch_url(url)`. Use them. Do not narrate; do not invent other tools.\n\nProcedure:\n  1. Read the QUESTION in the prompt.\n  2. Issue ONE `web_search` to get candidate URLs.\n  3. Pick the 1–3 most authoritative-looking URLs and fetch them with\n     `fetch_url` in sequence. Avoid clearly low-signal results (aggregator\n     spam, ad redirects).\n  4. Synthesise the relevant content from the fetched pages.\n\nTime budget: keep tool calls to 4 max per invocation. If a `fetch_url`\nreturns very little usable text, do not retry; move on.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"question\": \"<the question this run answered>\",\n    \"sources\": [{\"url\": \"<url>\", \"title\": \"<title>\"}, ...],\n    \"findings\": \"<2–6 short paragraphs of normalised text>\"\n  }\n\nYou do NOT produce the final user-facing answer. The downstream\ndistiller or formatter does that. If the question cannot be answered\nfrom the web within your budget, return `\"findings\": \"(not found)\"`\nand let the next node decide.\n\nService-failure investigations. When the QUESTION describes a degraded\nservice (a symptom plus a dependency list), research the common causes\nof that failure mode for that stack and add a `candidate_causes` key\nto your output: a list of short snake_case cause labels that MUST\ninclude one `<dep>_unavailable` entry per named dependency (e.g.\n`postgres_unavailable`, `redis_unavailable`) plus the symptom-specific\ncauses your sources support (e.g. `connection_pool_exhausted`,\n`slow_query`). Keep `findings` as the prose evidence for those causes.\n\nQUESTION: Investigate search-service: timeouts, dependencies: Elasticsearch, PostgreSQL. Identify current health status and recent error logs.\n\nMEMORY HITS (2 from FAISS):\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[]",
+  "started_at": 1780521820.5271902,
+  "completed_at": 1780521844.5978072,
+  "retries": 0
+}

@@ -1,0 +1,1 @@
+Our checkout, search, and auth services are all down due to a shared PostgreSQL outage - recommend the remediation that brings them all back.

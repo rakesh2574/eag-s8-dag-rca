@@ -1,0 +1,32 @@
+{
+  "node_id": "n:7",
+  "skill": "sandbox_executor",
+  "status": "complete",
+  "inputs": [
+    "n:5"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "sandbox_executor",
+    "output": {
+      "exit_code": 0,
+      "stdout": "{\"differences\": [{\"pair\": [\"London\", \"Paris\"], \"difference\": 6.9}, {\"pair\": [\"London\", \"Berlin\"], \"difference\": 5.1}, {\"pair\": [\"Paris\", \"Berlin\"], \"difference\": 1.7999999999999998}], \"closest_pair\": [\"Paris\", \"Berlin\"], \"closest_difference\": 1.7999999999999998, \"verdict\": \"calculated\"}\n",
+      "stdout_truncated": false,
+      "stderr": "",
+      "stderr_truncated": false,
+      "files_written": [],
+      "timed_out": false,
+      "cwd": "/sessions/optimistic-funny-tesla/tmp/s8sandbox-xgpfflw4"
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.01764988899230957,
+    "provider": "",
+    "error": null
+  },
+  "prompt_sent": "You are the SandboxExecutor skill. You exist to receive Python code\nemitted by an upstream Coder node and run it in a subprocess sandbox.\n\nThis skill almost never sees the LLM: the orchestrator calls\n`sandbox.run_python(code)` directly and packages the result into the\nAgentResult. This file is here so the catalogue listing is complete and\nso a future iteration can extend the skill with LLM-level post-checks.\n\nWhen invoked through the LLM path (only used for post-mortem\nexplanations), you receive `result` in INPUTS — the stdout / stderr /\nexit-code dict the sandbox returned. Your job is to describe what\nhappened:\n\n  {\n    \"summary\": \"<one line — exit code, whether it timed out, what was printed>\"\n  }\n\nYou make no other tool calls. You do not re-execute the code.\n\nMEMORY HITS (3 from FAISS):\n  - [scratchpad] Find populations of London, Paris, and Berlin to identify the two closest in size\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Population comparison of London, Paris, and Berlin\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [scratchpad] Compare population sizes of London, Paris, and Berlin\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[\n  {\n    \"id\": \"n:5\",\n    \"kind\": \"upstream\",\n    \"skill\": \"coder\",\n    \"output\": {\n      \"code\": \"import json\\nfrom itertools import combinations\\n\\n# Populations in millions\\n# London: ~9.0 (Greater London)\\n# Paris: ~2.1 (City proper/commune)\\n# Berlin: ~3.9 (City proper)\\n\\ndata = {\\n    \\\"London\\\": 9.0,\\n    \\\"Paris\\\": 2.1,\\n    \\\"Berlin\\\": 3.9\\n}\\n\\nresults = []\\nfor (city1, pop1), (city2, pop2) in combinations(data.items(), 2):\\n    diff = abs(pop1 - pop2)\\n    results.append({\\\"pair\\\": (city1, city2), \\\"difference\\\": diff})\\n\\nclosest = min(results, key=lambda x: x['difference'])\\n\\nprint(json.dumps({\\n    \\\"differences\\\": results,\\n    \\\"closest_pair\\\": closest['pair'],\\n    \\\"closest_difference\\\": closest['difference'],\\n    \\\"verdict\\\": \\\"calculated\\\"\\n}))\",\n      \"summary\": \"The code calculates the absolute population differences between London (9.0M), Paris (2.1M), and Berlin (3.9M). The differences are: London-Paris (6.9M), London-Berlin (5.1M), and Paris-Berlin (1.8M). The two cities closest in size are Paris and Berlin, with a difference of 1.8 million.\"\n    }\n  }\n]",
+  "started_at": 1780518823.738774,
+  "completed_at": 1780518823.7564244,
+  "retries": 0
+}

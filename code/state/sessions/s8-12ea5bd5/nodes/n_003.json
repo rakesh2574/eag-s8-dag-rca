@@ -1,0 +1,39 @@
+{
+  "node_id": "n:3",
+  "skill": "researcher",
+  "status": "complete",
+  "inputs": [],
+  "result": {
+    "success": true,
+    "agent_name": "researcher",
+    "output": {
+      "question": "Investigate search-service (timeouts, depends on Elasticsearch, PostgreSQL) for current health issues.",
+      "sources": [
+        {
+          "url": "https://markaicode.com/errors/elasticsearch-timeout-error-fix-production/",
+          "title": "Elasticsearch Timeout Error: Fix Production Search Timeouts in 2 Steps"
+        }
+      ],
+      "findings": "Search service timeouts typically occur when queries exceed the default 30-second window, often indicating resource pressure or inefficient query patterns. Common Elasticsearch-specific causes include high shard counts per index, complex aggregations on large datasets, and thread pool exhaustion where search queues are full. Monitoring `_nodes/stats` for memory pressure, cache evictions, and thread pool queue sizes is recommended to identify if nodes are struggling with load or swapping.\n\nPostgreSQL as a dependency for a search service often acts as the source of truth or metadata store. If the search-service is timing out, it may be waiting on slow queries, connection pool exhaustion, or transaction locks within the PostgreSQL database, which can cascade into search-service latency if the application waits synchronously for database results before executing search operations.\n\nTo remediate, teams should first investigate if the timeouts are due to resource contention (CPU/Memory) or query complexity. Short-term mitigation includes increasing the `search.default_search_timeout` or using asynchronous search APIs for long-running processes. Long-term health requires optimizing query structures, managing shard counts, and ensuring the database connection pool is appropriately sized for the search-service workload.",
+      "candidate_causes": [
+        "elasticsearch_unavailable",
+        "postgresql_unavailable",
+        "connection_pool_exhausted",
+        "slow_query",
+        "shard_pressure",
+        "thread_pool_exhaustion",
+        "memory_pressure"
+      ]
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 28.323791027069092,
+    "provider": "gemini",
+    "error": null
+  },
+  "prompt_sent": "You are the Researcher skill. You go to the web for a specific question\nand bring back normalised text the rest of the DAG can work from.\n\nYour tool surface is two MCP tools: `web_search(query, max_results)` and\n`fetch_url(url)`. Use them. Do not narrate; do not invent other tools.\n\nProcedure:\n  1. Read the QUESTION in the prompt.\n  2. Issue ONE `web_search` to get candidate URLs.\n  3. Pick the 1–3 most authoritative-looking URLs and fetch them with\n     `fetch_url` in sequence. Avoid clearly low-signal results (aggregator\n     spam, ad redirects).\n  4. Synthesise the relevant content from the fetched pages.\n\nTime budget: keep tool calls to 4 max per invocation. If a `fetch_url`\nreturns very little usable text, do not retry; move on.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"question\": \"<the question this run answered>\",\n    \"sources\": [{\"url\": \"<url>\", \"title\": \"<title>\"}, ...],\n    \"findings\": \"<2–6 short paragraphs of normalised text>\"\n  }\n\nYou do NOT produce the final user-facing answer. The downstream\ndistiller or formatter does that. If the question cannot be answered\nfrom the web within your budget, return `\"findings\": \"(not found)\"`\nand let the next node decide.\n\nService-failure investigations. When the QUESTION describes a degraded\nservice (a symptom plus a dependency list), research the common causes\nof that failure mode for that stack and add a `candidate_causes` key\nto your output: a list of short snake_case cause labels that MUST\ninclude one `<dep>_unavailable` entry per named dependency (e.g.\n`postgres_unavailable`, `redis_unavailable`) plus the symptom-specific\ncauses your sources support (e.g. `connection_pool_exhausted`,\n`slow_query`). Keep `findings` as the prose evidence for those causes.\n\nQUESTION: Investigate search-service (timeouts, depends on Elasticsearch, PostgreSQL) for current health issues.\n\nMEMORY HITS (2 from FAISS):\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[]",
+  "started_at": 1780575498.2921271,
+  "completed_at": 1780575526.6159182,
+  "retries": 0
+}

@@ -1,0 +1,4297 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Fetch the current populations for London, Paris, and Berlin in parallel, then use a coder to calculate the differences and identify the two closest in size.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 4.097245931625366,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:4"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:2",
+        "n:3",
+        "n:4"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+      },
+      "status": "pending",
+      "id": "n:5"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:2",
+        "n:3",
+        "n:4",
+        "n:5"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:6"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:2 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:2",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous researcher attempts failed, I will use the coder to perform the calculation after retrieving the known population data for London, Paris, and Berlin.",
+          "nodes": [
+            {
+              "skill": "retriever",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "data",
+                "question": "What are the current populations of London, Paris, and Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:data"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Given these populations, calculate the differences between each pair and identify which two are closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:data",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "retriever",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "data",
+              "question": "What are the current populations of London, Paris, and Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:data"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Given these populations, calculate the differences between each pair and identify which two are closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:data",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 5.981959819793701,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:7"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:3 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:3",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since the previous researcher nodes failed and there is no indexed knowledge of the current populations, I will re-attempt to fetch the data for each city in parallel and then use a coder node to calculate the closest pair.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest values."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest values."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 12.727551937103271,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:8"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:4 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:4",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since the previous attempt failed and I have no reliable indexed data for the current populations, I will re-fetch the population data for each city in parallel and then use a coder to perform the comparison.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Extract the population numbers from the research results and determine which two are closest in absolute difference."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Extract the population numbers from the research results and determine which two are closest in absolute difference."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 10.027737855911255,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:9"
+    },
+    {
+      "skill": "retriever",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "data",
+        "question": "What are the current populations of London, Paris, and Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "retriever",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:10"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:10"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Given these populations, calculate the differences between each pair and identify which two are closest in size."
+      },
+      "status": "pending",
+      "id": "n:11"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:10",
+        "n:11"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:12"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:13"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:14"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:15"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:13",
+        "n:14",
+        "n:15"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest values."
+      },
+      "status": "pending",
+      "id": "n:16"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:13",
+        "n:14",
+        "n:15",
+        "n:16"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:17"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:18"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:19"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:20"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:18",
+        "n:19",
+        "n:20"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Extract the population numbers from the research results and determine which two are closest in absolute difference."
+      },
+      "status": "pending",
+      "id": "n:21"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:18",
+        "n:19",
+        "n:20",
+        "n:21"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:22"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:10 skill=retriever reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:10",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since the previous retriever attempt failed and no indexed facts contain the current populations, I will fetch the population data for each city in parallel and then use a coder to calculate the differences to identify the closest pair.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 22.716457843780518,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:23"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:13 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:13",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Retrieve the population data for London, Paris, and Berlin using the retriever to leverage existing knowledge, then compute the differences to identify the closest pair.",
+          "nodes": [
+            {
+              "skill": "retriever",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "data",
+                "question": "What are the current populations of London, Paris, and Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:data"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the two closest values."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:data",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "retriever",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "data",
+              "question": "What are the current populations of London, Paris, and Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:data"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the two closest values."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:data",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 18.603824138641357,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:24"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:14 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:14",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since the previous researcher nodes failed, I will use the coder skill to perform the calculation after retrieving the population data, ensuring a robust approach to the comparison.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 2.7045412063598633,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:25"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:15 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:15",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous attempts failed and the memory hits do not contain the actual population data, I will fetch the data for each city individually and then use a coder to perform the mathematical comparison.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 14.889214038848877,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:26"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:18 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:18",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous research attempts failed and memory hits do not contain the specific population data, I will fetch the data for each city in parallel and use a coder node to calculate the differences and identify the closest pair.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 9.294739007949829,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:27"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:19 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:19",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since the previous attempt failed, I will use the researcher to fetch the population data for each city individually and then use a coder to perform the arithmetic comparison.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Compare the population values from the inputs and identify which two are closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Compare the population values from the inputs and identify which two are closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 11.335798025131226,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:28"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:20 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:20",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous researcher attempts failed, I will use the retriever to find the populations from indexed knowledge, then use a coder to calculate the differences and identify the closest pair.",
+          "nodes": [
+            {
+              "skill": "retriever",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "ret1",
+                "question": "What are the current populations of London, Paris, and Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:ret1"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify which two are closest."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "retriever",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "ret1",
+              "question": "What are the current populations of London, Paris, and Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:ret1"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify which two are closest."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 26.574947834014893,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:29"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:30"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:31"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:32"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:30",
+        "n:31",
+        "n:32"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+      },
+      "status": "pending",
+      "id": "n:33"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:30",
+        "n:31",
+        "n:32",
+        "n:33"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:34"
+    },
+    {
+      "skill": "retriever",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "data",
+        "question": "What are the current populations of London, Paris, and Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "retriever",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:35"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:35"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the two closest values."
+      },
+      "status": "pending",
+      "id": "n:36"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:35",
+        "n:36"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:37"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:38"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:39"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:40"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:38",
+        "n:39",
+        "n:40"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+      },
+      "status": "pending",
+      "id": "n:41"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:38",
+        "n:39",
+        "n:40",
+        "n:41"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:42"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:43"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:44"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:45"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:43",
+        "n:44",
+        "n:45"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+      },
+      "status": "pending",
+      "id": "n:46"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:46"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:47"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:48"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:49"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:50"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:48",
+        "n:49",
+        "n:50"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+      },
+      "status": "pending",
+      "id": "n:51"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:48",
+        "n:49",
+        "n:50",
+        "n:51"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:52"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:53"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:54"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "researcher",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:55"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:53",
+        "n:54",
+        "n:55"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Compare the population values from the inputs and identify which two are closest in size."
+      },
+      "status": "pending",
+      "id": "n:56"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:56"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:57"
+    },
+    {
+      "skill": "retriever",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "ret1",
+        "question": "What are the current populations of London, Paris, and Berlin?"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "retriever",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)"
+      },
+      "_result_typed": true,
+      "id": "n:58"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:58"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify which two are closest."
+      },
+      "status": "pending",
+      "id": "n:59"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:59"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:60"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:30 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:30",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since the previous researcher nodes failed, I will use the retriever to fetch the population data from the knowledge base, then use the coder to perform the comparison calculation.",
+          "nodes": [
+            {
+              "skill": "retriever",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "data",
+                "question": "What are the current populations of London, Paris, and Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:data"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:data",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "retriever",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "data",
+              "question": "What are the current populations of London, Paris, and Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:data"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:data",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 27.936591863632202,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:61"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:31 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:31",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:62"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:32 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:32",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since the previous researcher nodes failed, I will use the retriever to fetch the population data from the indexed knowledge base and then use a coder to calculate the differences and identify the closest pair.",
+          "nodes": [
+            {
+              "skill": "retriever",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "data",
+                "question": "What are the current populations of London, Paris, and Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:data"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the two cities with the smallest difference."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "retriever",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "data",
+              "question": "What are the current populations of London, Paris, and Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:data"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the two cities with the smallest difference."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 26.853852033615112,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:63"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:35 skill=retriever reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:35",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:64"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:38 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:38",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous researcher attempts failed, I will use the retriever to find reliable population data from the knowledge base, then use the coder to perform the comparison calculation.",
+          "nodes": [
+            {
+              "skill": "retriever",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "data",
+                "question": "What are the current populations of London, Paris, and Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:data"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:data",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "retriever",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "data",
+              "question": "What are the current populations of London, Paris, and Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:data"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:data",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 31.991277933120728,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:65"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:39 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:39",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:66"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:40 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:40",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous attempts failed and I need to perform a calculation on specific values, I will retrieve the population data for each city individually and then use a coder node to determine which two are closest in size.",
+          "nodes": [
+            {
+              "skill": "retriever",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "data",
+                "question": "What are the current populations of London, Paris, and Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:data"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Given the populations, calculate the absolute difference between each pair (London-Paris, London-Berlin, Paris-Berlin) and identify the pair with the smallest difference."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:data",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "retriever",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "data",
+              "question": "What are the current populations of London, Paris, and Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:data"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Given the populations, calculate the absolute difference between each pair (London-Paris, London-Berlin, Paris-Berlin) and identify the pair with the smallest difference."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:data",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 3.7013111114501953,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:67"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:43 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:43",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:68"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:44 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:44",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous attempts to fetch population data failed, I will use the researcher to fetch the specific population figures for each city, then use the coder to perform the arithmetic comparison to identify the closest pair.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 12.280291080474854,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:69"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:45 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:45",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous researcher attempts failed and I have no cached population data in memory, I will use the coder to perform the arithmetic comparison after retrieving the data, or if I cannot retrieve, I will use the researcher again with a different approach to ensure success.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "c1",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the pair with the smallest difference."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:c1"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "c1",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the pair with the smallest difference."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:c1"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 10.250359773635864,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:70"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:48 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:48",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:71"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:49 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:49",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:72"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:50 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:50",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since the previous researcher nodes failed, I will use the retriever to fetch the necessary population data from the knowledge base, then use the coder to perform the comparison calculation.",
+          "nodes": [
+            {
+              "skill": "retriever",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "data",
+                "question": "What are the current populations of London, Paris, and Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:data"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Given the populations of London, Paris, and Berlin, calculate the absolute differences between all pairs and identify the two closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "retriever",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "data",
+              "question": "What are the current populations of London, Paris, and Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:data"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Given the populations of London, Paris, and Berlin, calculate the absolute differences between all pairs and identify the two closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 16.38067102432251,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:73"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:53 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:53",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous researcher attempts failed and there is no indexed knowledge base containing the current populations, I will use the coder to perform the comparison after fetching the data again, ensuring a robust execution path.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Extract the population numbers from the researcher outputs and determine which two values have the smallest absolute difference."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Extract the population numbers from the researcher outputs and determine which two values have the smallest absolute difference."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 21.138906002044678,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:74"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:54 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:54",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:75"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:55 skill=researcher reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:55",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "failed",
+      "result": {
+        "success": false,
+        "agent_name": "planner",
+        "output": {},
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 0.0,
+        "provider": "",
+        "error": "exception: HTTPStatusError: Server error '503 Service Unavailable' for url 'http://localhost:8108/v1/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+      },
+      "_result_typed": true,
+      "id": "n:76"
+    },
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "failure_report": "node=n:58 skill=retriever reason=upstream_failure error=exception: ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)",
+        "recovers": "n:58",
+        "recovery_reason": "upstream_failure"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Since previous attempts failed and I need to perform a calculation on the retrieved data, I will fetch the populations for each city and then use a coder node to determine which two are closest in size.",
+          "nodes": [
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rL",
+                "question": "What is the current population of London?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rP",
+                "question": "What is the current population of Paris?"
+              }
+            },
+            {
+              "skill": "researcher",
+              "inputs": [],
+              "metadata": {
+                "label": "rB",
+                "question": "What is the current population of Berlin?"
+              }
+            },
+            {
+              "skill": "coder",
+              "inputs": [
+                "n:rL",
+                "n:rP",
+                "n:rB"
+              ],
+              "metadata": {
+                "label": "calc",
+                "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:rL",
+                "n:rP",
+                "n:rB",
+                "n:calc"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rL",
+              "question": "What is the current population of London?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rP",
+              "question": "What is the current population of Paris?"
+            }
+          },
+          {
+            "skill": "researcher",
+            "inputs": [],
+            "metadata": {
+              "label": "rB",
+              "question": "What is the current population of Berlin?"
+            }
+          },
+          {
+            "skill": "coder",
+            "inputs": [
+              "n:rL",
+              "n:rP",
+              "n:rB"
+            ],
+            "metadata": {
+              "label": "calc",
+              "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:rL",
+              "n:rP",
+              "n:rB",
+              "n:calc"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 37.1615891456604,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:77"
+    },
+    {
+      "skill": "retriever",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "data",
+        "question": "What are the current populations of London, Paris, and Berlin?"
+      },
+      "status": "pending",
+      "id": "n:78"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:78"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+      },
+      "status": "pending",
+      "id": "n:79"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:78",
+        "n:79"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:80"
+    },
+    {
+      "skill": "retriever",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "data",
+        "question": "What are the current populations of London, Paris, and Berlin?"
+      },
+      "status": "pending",
+      "id": "n:81"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:81"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the two cities with the smallest difference."
+      },
+      "status": "pending",
+      "id": "n:82"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:82"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:83"
+    },
+    {
+      "skill": "retriever",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "data",
+        "question": "What are the current populations of London, Paris, and Berlin?"
+      },
+      "status": "pending",
+      "id": "n:84"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:84"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+      },
+      "status": "pending",
+      "id": "n:85"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:84",
+        "n:85"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:86"
+    },
+    {
+      "skill": "retriever",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "data",
+        "question": "What are the current populations of London, Paris, and Berlin?"
+      },
+      "status": "pending",
+      "id": "n:87"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:87"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Given the populations, calculate the absolute difference between each pair (London-Paris, London-Berlin, Paris-Berlin) and identify the pair with the smallest difference."
+      },
+      "status": "pending",
+      "id": "n:88"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:87",
+        "n:88"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:89"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "pending",
+      "id": "n:90"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "pending",
+      "id": "n:91"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "pending",
+      "id": "n:92"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:90",
+        "n:91",
+        "n:92"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to determine which two are closest in size."
+      },
+      "status": "pending",
+      "id": "n:93"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:90",
+        "n:91",
+        "n:92",
+        "n:93"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:94"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "pending",
+      "id": "n:95"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "pending",
+      "id": "n:96"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "pending",
+      "id": "n:97"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:95",
+        "n:96",
+        "n:97"
+      ],
+      "metadata": {
+        "label": "c1",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin and identify the pair with the smallest difference."
+      },
+      "status": "pending",
+      "id": "n:98"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:98"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:99"
+    },
+    {
+      "skill": "retriever",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "data",
+        "question": "What are the current populations of London, Paris, and Berlin?"
+      },
+      "status": "pending",
+      "id": "n:100"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:100"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Given the populations of London, Paris, and Berlin, calculate the absolute differences between all pairs and identify the two closest in size."
+      },
+      "status": "pending",
+      "id": "n:101"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:101"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:102"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "pending",
+      "id": "n:103"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "pending",
+      "id": "n:104"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "pending",
+      "id": "n:105"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:103",
+        "n:104",
+        "n:105"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Extract the population numbers from the researcher outputs and determine which two values have the smallest absolute difference."
+      },
+      "status": "pending",
+      "id": "n:106"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:103",
+        "n:104",
+        "n:105",
+        "n:106"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:107"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rL",
+        "question": "What is the current population of London?"
+      },
+      "status": "pending",
+      "id": "n:108"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rP",
+        "question": "What is the current population of Paris?"
+      },
+      "status": "pending",
+      "id": "n:109"
+    },
+    {
+      "skill": "researcher",
+      "inputs": [],
+      "metadata": {
+        "label": "rB",
+        "question": "What is the current population of Berlin?"
+      },
+      "status": "pending",
+      "id": "n:110"
+    },
+    {
+      "skill": "coder",
+      "inputs": [
+        "n:108",
+        "n:109",
+        "n:110"
+      ],
+      "metadata": {
+        "label": "calc",
+        "question": "Calculate the absolute differences between the populations of London, Paris, and Berlin to identify the two closest in size."
+      },
+      "status": "pending",
+      "id": "n:111"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:108",
+        "n:109",
+        "n:110",
+        "n:111"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "pending",
+      "id": "n:112"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:1",
+      "target": "n:2"
+    },
+    {
+      "source": "n:1",
+      "target": "n:3"
+    },
+    {
+      "source": "n:1",
+      "target": "n:4"
+    },
+    {
+      "source": "n:2",
+      "target": "n:5"
+    },
+    {
+      "source": "n:2",
+      "target": "n:6"
+    },
+    {
+      "source": "n:3",
+      "target": "n:5"
+    },
+    {
+      "source": "n:3",
+      "target": "n:6"
+    },
+    {
+      "source": "n:4",
+      "target": "n:5"
+    },
+    {
+      "source": "n:4",
+      "target": "n:6"
+    },
+    {
+      "source": "n:5",
+      "target": "n:6"
+    },
+    {
+      "source": "n:8",
+      "target": "n:13"
+    },
+    {
+      "source": "n:8",
+      "target": "n:14"
+    },
+    {
+      "source": "n:8",
+      "target": "n:15"
+    },
+    {
+      "source": "n:9",
+      "target": "n:18"
+    },
+    {
+      "source": "n:9",
+      "target": "n:19"
+    },
+    {
+      "source": "n:9",
+      "target": "n:20"
+    },
+    {
+      "source": "n:10",
+      "target": "n:11"
+    },
+    {
+      "source": "n:10",
+      "target": "n:12"
+    },
+    {
+      "source": "n:11",
+      "target": "n:12"
+    },
+    {
+      "source": "n:13",
+      "target": "n:16"
+    },
+    {
+      "source": "n:13",
+      "target": "n:17"
+    },
+    {
+      "source": "n:14",
+      "target": "n:16"
+    },
+    {
+      "source": "n:14",
+      "target": "n:17"
+    },
+    {
+      "source": "n:15",
+      "target": "n:16"
+    },
+    {
+      "source": "n:15",
+      "target": "n:17"
+    },
+    {
+      "source": "n:16",
+      "target": "n:17"
+    },
+    {
+      "source": "n:18",
+      "target": "n:21"
+    },
+    {
+      "source": "n:18",
+      "target": "n:22"
+    },
+    {
+      "source": "n:19",
+      "target": "n:21"
+    },
+    {
+      "source": "n:19",
+      "target": "n:22"
+    },
+    {
+      "source": "n:20",
+      "target": "n:21"
+    },
+    {
+      "source": "n:20",
+      "target": "n:22"
+    },
+    {
+      "source": "n:21",
+      "target": "n:22"
+    },
+    {
+      "source": "n:23",
+      "target": "n:30"
+    },
+    {
+      "source": "n:23",
+      "target": "n:31"
+    },
+    {
+      "source": "n:23",
+      "target": "n:32"
+    },
+    {
+      "source": "n:25",
+      "target": "n:38"
+    },
+    {
+      "source": "n:25",
+      "target": "n:39"
+    },
+    {
+      "source": "n:25",
+      "target": "n:40"
+    },
+    {
+      "source": "n:26",
+      "target": "n:43"
+    },
+    {
+      "source": "n:26",
+      "target": "n:44"
+    },
+    {
+      "source": "n:26",
+      "target": "n:45"
+    },
+    {
+      "source": "n:27",
+      "target": "n:48"
+    },
+    {
+      "source": "n:27",
+      "target": "n:49"
+    },
+    {
+      "source": "n:27",
+      "target": "n:50"
+    },
+    {
+      "source": "n:28",
+      "target": "n:53"
+    },
+    {
+      "source": "n:28",
+      "target": "n:54"
+    },
+    {
+      "source": "n:28",
+      "target": "n:55"
+    },
+    {
+      "source": "n:30",
+      "target": "n:33"
+    },
+    {
+      "source": "n:30",
+      "target": "n:34"
+    },
+    {
+      "source": "n:31",
+      "target": "n:33"
+    },
+    {
+      "source": "n:31",
+      "target": "n:34"
+    },
+    {
+      "source": "n:32",
+      "target": "n:33"
+    },
+    {
+      "source": "n:32",
+      "target": "n:34"
+    },
+    {
+      "source": "n:33",
+      "target": "n:34"
+    },
+    {
+      "source": "n:35",
+      "target": "n:36"
+    },
+    {
+      "source": "n:35",
+      "target": "n:37"
+    },
+    {
+      "source": "n:36",
+      "target": "n:37"
+    },
+    {
+      "source": "n:38",
+      "target": "n:41"
+    },
+    {
+      "source": "n:38",
+      "target": "n:42"
+    },
+    {
+      "source": "n:39",
+      "target": "n:41"
+    },
+    {
+      "source": "n:39",
+      "target": "n:42"
+    },
+    {
+      "source": "n:40",
+      "target": "n:41"
+    },
+    {
+      "source": "n:40",
+      "target": "n:42"
+    },
+    {
+      "source": "n:41",
+      "target": "n:42"
+    },
+    {
+      "source": "n:43",
+      "target": "n:46"
+    },
+    {
+      "source": "n:44",
+      "target": "n:46"
+    },
+    {
+      "source": "n:45",
+      "target": "n:46"
+    },
+    {
+      "source": "n:46",
+      "target": "n:47"
+    },
+    {
+      "source": "n:48",
+      "target": "n:51"
+    },
+    {
+      "source": "n:48",
+      "target": "n:52"
+    },
+    {
+      "source": "n:49",
+      "target": "n:51"
+    },
+    {
+      "source": "n:49",
+      "target": "n:52"
+    },
+    {
+      "source": "n:50",
+      "target": "n:51"
+    },
+    {
+      "source": "n:50",
+      "target": "n:52"
+    },
+    {
+      "source": "n:51",
+      "target": "n:52"
+    },
+    {
+      "source": "n:53",
+      "target": "n:56"
+    },
+    {
+      "source": "n:54",
+      "target": "n:56"
+    },
+    {
+      "source": "n:55",
+      "target": "n:56"
+    },
+    {
+      "source": "n:56",
+      "target": "n:57"
+    },
+    {
+      "source": "n:58",
+      "target": "n:59"
+    },
+    {
+      "source": "n:59",
+      "target": "n:60"
+    },
+    {
+      "source": "n:69",
+      "target": "n:90"
+    },
+    {
+      "source": "n:69",
+      "target": "n:91"
+    },
+    {
+      "source": "n:69",
+      "target": "n:92"
+    },
+    {
+      "source": "n:70",
+      "target": "n:95"
+    },
+    {
+      "source": "n:70",
+      "target": "n:96"
+    },
+    {
+      "source": "n:70",
+      "target": "n:97"
+    },
+    {
+      "source": "n:74",
+      "target": "n:103"
+    },
+    {
+      "source": "n:74",
+      "target": "n:104"
+    },
+    {
+      "source": "n:74",
+      "target": "n:105"
+    },
+    {
+      "source": "n:77",
+      "target": "n:108"
+    },
+    {
+      "source": "n:77",
+      "target": "n:109"
+    },
+    {
+      "source": "n:77",
+      "target": "n:110"
+    },
+    {
+      "source": "n:78",
+      "target": "n:79"
+    },
+    {
+      "source": "n:78",
+      "target": "n:80"
+    },
+    {
+      "source": "n:79",
+      "target": "n:80"
+    },
+    {
+      "source": "n:81",
+      "target": "n:82"
+    },
+    {
+      "source": "n:82",
+      "target": "n:83"
+    },
+    {
+      "source": "n:84",
+      "target": "n:85"
+    },
+    {
+      "source": "n:84",
+      "target": "n:86"
+    },
+    {
+      "source": "n:85",
+      "target": "n:86"
+    },
+    {
+      "source": "n:87",
+      "target": "n:88"
+    },
+    {
+      "source": "n:87",
+      "target": "n:89"
+    },
+    {
+      "source": "n:88",
+      "target": "n:89"
+    },
+    {
+      "source": "n:90",
+      "target": "n:93"
+    },
+    {
+      "source": "n:90",
+      "target": "n:94"
+    },
+    {
+      "source": "n:91",
+      "target": "n:93"
+    },
+    {
+      "source": "n:91",
+      "target": "n:94"
+    },
+    {
+      "source": "n:92",
+      "target": "n:93"
+    },
+    {
+      "source": "n:92",
+      "target": "n:94"
+    },
+    {
+      "source": "n:93",
+      "target": "n:94"
+    },
+    {
+      "source": "n:95",
+      "target": "n:98"
+    },
+    {
+      "source": "n:96",
+      "target": "n:98"
+    },
+    {
+      "source": "n:97",
+      "target": "n:98"
+    },
+    {
+      "source": "n:98",
+      "target": "n:99"
+    },
+    {
+      "source": "n:100",
+      "target": "n:101"
+    },
+    {
+      "source": "n:101",
+      "target": "n:102"
+    },
+    {
+      "source": "n:103",
+      "target": "n:106"
+    },
+    {
+      "source": "n:103",
+      "target": "n:107"
+    },
+    {
+      "source": "n:104",
+      "target": "n:106"
+    },
+    {
+      "source": "n:104",
+      "target": "n:107"
+    },
+    {
+      "source": "n:105",
+      "target": "n:106"
+    },
+    {
+      "source": "n:105",
+      "target": "n:107"
+    },
+    {
+      "source": "n:106",
+      "target": "n:107"
+    },
+    {
+      "source": "n:108",
+      "target": "n:111"
+    },
+    {
+      "source": "n:108",
+      "target": "n:112"
+    },
+    {
+      "source": "n:109",
+      "target": "n:111"
+    },
+    {
+      "source": "n:109",
+      "target": "n:112"
+    },
+    {
+      "source": "n:110",
+      "target": "n:111"
+    },
+    {
+      "source": "n:110",
+      "target": "n:112"
+    },
+    {
+      "source": "n:111",
+      "target": "n:112"
+    }
+  ]
+}

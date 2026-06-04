@@ -1,0 +1,26 @@
+{
+  "node_id": "n:3",
+  "skill": "critic",
+  "status": "complete",
+  "inputs": [
+    "n:2"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "critic",
+    "output": {
+      "verdict": "pass",
+      "rationale": "The output is valid according to the canonical schema."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 3.161527395248413,
+    "provider": "groq",
+    "error": null
+  },
+  "prompt_sent": "You are the Critic skill. You evaluate one upstream node's output and\nreturn pass-or-fail with a short rationale.\n\nYou have ONE tool: `validate_service_record(json_str)`. It\ndeterministically checks a service incident record against the\ncanonical schema (exactly the keys `service`, `symptom`,\n`dependencies`, `candidate_causes`; the two lists must be non-empty\nlists of strings) and returns `{\"valid\": bool, \"errors\": [...]}`.\n\nProcedure:\n  1. Read the UPSTREAM output in INPUTS and the QUESTION (the\n     constraint the Planner asked you to enforce), if present.\n  2. If the upstream output is — or contains — a service incident\n     record (look for `fields` with service/symptom keys, or the keys\n     themselves), you MUST call `validate_service_record` with the\n     record serialised as a JSON string. Ground your verdict in the\n     tool result: valid=true → pass; valid=false → fail, and copy the\n     tool's `errors` into your rationale. Do NOT eyeball the schema\n     yourself; the tool is the authority.\n  3. Otherwise (no record-shaped output), judge by reading: look for\n     fabricated fields, claims unsupported by the inputs,\n     contradictions, or missing fields the input clearly contained.\n  4. Emit pass or fail.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"verdict\": \"pass\" | \"fail\",\n    \"rationale\": \"<one or two short sentences; cite tool errors verbatim on fail>\"\n  }\n\nWhen you emit `fail`, the orchestrator may invoke the Planner to\nrecover. Be specific in your rationale so the recovery plan can be\ntargeted. Do not fail for stylistic reasons; only fail when the\nupstream output is wrong, missing, schema-invalid, or unsupported.\n\nQUESTION: Validate that the JSON contains exactly the keys: service, symptom, dependencies, candidate_causes. Ensure dependencies and candidate_causes are non-empty lists of strings.\n\nMEMORY HITS (3 from FAISS):\n  - [scratchpad] Incident analysis for checkout-service, search-service, and auth-service platform degradation\n      source: user_query\n      raw: Three services in our platform are degraded right now. Investigate each and tell me whether they share a single root cause or are separate incidents:\n - checkout-service: returning HTTP 503s; depends on PostgreSQL and Redis\n - search-service:   requests timing out; depends on Elasticsearch and PostgreSQL\n - auth-service:     intermittent HTTP 500s; depends on PostgreSQL and an LDAP server\n  - [scratchpad] Investigate degraded checkout-service, search-service, and auth-service for shared root cause\n      source: user_query\n      raw: Three services in our platform are degraded right now. Investigate each and tell me whether they share a single root cause or are separate incidents:\n - checkout-service: returning HTTP 503s; depends on PostgreSQL and Redis\n - search-service:   requests timing out; depends on Elasticsearch and PostgreSQL\n - auth-service:     intermittent HTTP 500s; depends on PostgreSQL and an LDAP server\n  - [scratchpad] Find populations of London, Paris, and Berlin to identify the two closest in size\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[\n  {\n    \"id\": \"n:2\",\n    \"kind\": \"upstream\",\n    \"skill\": \"distiller\",\n    \"output\": {\n      \"fields\": {\n        \"service\": \"checkout-service\",\n        \"symptom\": \"returning HTTP 503s\",\n        \"dependencies\": [\n          \"PostgreSQL\",\n          \"Redis\"\n        ],\n        \"candidate_causes\": [\n          \"postgresql_unavailable\",\n          \"redis_unavailable\"\n        ]\n      },\n      \"rationale\": \"The service, symptom, and dependencies were extracted directly from the USER_QUERY, which also provided the basis for the required candidate_causes.\"\n    }\n  }\n]",
+  "started_at": 1780519163.0707536,
+  "completed_at": 1780519166.2322814,
+  "retries": 0
+}

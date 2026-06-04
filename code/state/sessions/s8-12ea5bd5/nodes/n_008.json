@@ -1,0 +1,32 @@
+{
+  "node_id": "n:8",
+  "skill": "sandbox_executor",
+  "status": "complete",
+  "inputs": [
+    "n:5"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "sandbox_executor",
+    "output": {
+      "exit_code": 0,
+      "stdout": "{\"frequency\": {\"postgresql_unavailable\": 3, \"redis_unavailable\": 1, \"connection_pool_exhausted\": 3, \"dependency_latency_timeout\": 1, \"port_conflict\": 1, \"service_process_crash\": 1, \"elasticsearch_unavailable\": 1, \"slow_query\": 1, \"shard_pressure\": 1, \"thread_pool_exhaustion\": 1, \"memory_pressure\": 1, \"ldap_unavailable\": 1, \"ldap_bind_failure\": 1, \"db_query_timeout\": 1}, \"top_common_cause\": \"postgresql_unavailable\", \"total_services\": 3, \"confidence\": 1.0, \"verdict\": \"single root cause\"}\n",
+      "stdout_truncated": false,
+      "stderr": "",
+      "stderr_truncated": false,
+      "files_written": [],
+      "timed_out": false,
+      "cwd": "/var/folders/jq/p7lt3n711k37241yk772c5t80000gn/T/s8sandbox-psgv9t2e"
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.04445219039916992,
+    "provider": "",
+    "error": null
+  },
+  "prompt_sent": "You are the SandboxExecutor skill. You exist to receive Python code\nemitted by an upstream Coder node and run it in a subprocess sandbox.\n\nThis skill almost never sees the LLM: the orchestrator calls\n`sandbox.run_python(code)` directly and packages the result into the\nAgentResult. This file is here so the catalogue listing is complete and\nso a future iteration can extend the skill with LLM-level post-checks.\n\nWhen invoked through the LLM path (only used for post-mortem\nexplanations), you receive `result` in INPUTS — the stdout / stderr /\nexit-code dict the sandbox returned. Your job is to describe what\nhappened:\n\n  {\n    \"summary\": \"<one line — exit code, whether it timed out, what was printed>\"\n  }\n\nYou make no other tool calls. You do not re-execute the code.\n\nMEMORY HITS (2 from FAISS):\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[\n  {\n    \"id\": \"n:5\",\n    \"kind\": \"upstream\",\n    \"skill\": \"coder\",\n    \"output\": {\n      \"code\": \"import json\\nfrom collections import Counter\\n\\nservices_data = [\\n    {\\\"name\\\": \\\"checkout-service\\\", \\\"causes\\\": [\\\"postgresql_unavailable\\\", \\\"redis_unavailable\\\", \\\"connection_pool_exhausted\\\", \\\"dependency_latency_timeout\\\", \\\"port_conflict\\\", \\\"service_process_crash\\\"]},\\n    {\\\"name\\\": \\\"search-service\\\", \\\"causes\\\": [\\\"elasticsearch_unavailable\\\", \\\"postgresql_unavailable\\\", \\\"connection_pool_exhausted\\\", \\\"slow_query\\\", \\\"shard_pressure\\\", \\\"thread_pool_exhaustion\\\", \\\"memory_pressure\\\"]},\\n    {\\\"name\\\": \\\"auth-service\\\", \\\"causes\\\": [\\\"postgresql_unavailable\\\", \\\"ldap_unavailable\\\", \\\"connection_pool_exhausted\\\", \\\"ldap_bind_failure\\\", \\\"db_query_timeout\\\"]}\\n]\\n\\nall_causes = []\\nfor s in services_data:\\n    all_causes.extend(s['causes'])\\n\\ncounts = Counter(all_causes)\\ntotal_services = len(services_data)\\ntop_cause, freq = counts.most_common(1)[0]\\n\\nconfidence = freq / total_services\\n# Verdict logic: \\\"single root cause\\\" if top cause appears in all (or all but one if >= 4 services)\\n# Here we have 3 services, so it must appear in all 3.\\nverdict = \\\"single root cause\\\" if freq == total_services else \\\"multiple independent incidents\\\"\\n\\nprint(json.dumps({\\n    \\\"frequency\\\": dict(counts),\\n    \\\"top_common_cause\\\": top_cause,\\n    \\\"total_services\\\": total_services,\\n    \\\"confidence\\\": confidence,\\n    \\\"verdict\\\": verdict\\n}))\",\n      \"summary\": \"The analysis of candidate causes across the checkout, search, and auth services reveals that 'postgresql_unavailable' and 'connection_pool_exhausted' are the most frequent issues, each appearing in all three services. With a confidence score of 1.0, the verdict is a single root cause, specifically pointing to PostgreSQL connectivity or connection pool exhaustion as the shared failure point.\"\n    }\n  }\n]",
+  "started_at": 1780575534.4244916,
+  "completed_at": 1780575534.4689438,
+  "retries": 0
+}

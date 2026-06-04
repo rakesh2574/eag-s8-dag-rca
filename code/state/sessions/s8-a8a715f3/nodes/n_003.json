@@ -1,0 +1,30 @@
+{
+  "node_id": "n:3",
+  "skill": "researcher",
+  "status": "complete",
+  "inputs": [],
+  "result": {
+    "success": true,
+    "agent_name": "researcher",
+    "output": {
+      "question": "What is the current population of Paris?",
+      "sources": [
+        {
+          "url": "https://www.macrotrends.net/global-metrics/cities/20985/paris/population",
+          "title": "Paris, France Metro Area Population (1950-2026) - Macrotrends"
+        }
+      ],
+      "findings": "The population of Paris depends heavily on whether one refers to the city proper or the greater metropolitan area. According to recent estimates, the Paris metropolitan area population for 2026 is approximately 11.4 million people.\n\nIt is important to distinguish between metropolitan figures and the population of the administrative city of Paris (the commune), which is significantly smaller, typically numbering around 2.1 million inhabitants."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 28.622002124786377,
+    "provider": "gemini",
+    "error": null
+  },
+  "prompt_sent": "You are the Researcher skill. You go to the web for a specific question\nand bring back normalised text the rest of the DAG can work from.\n\nYour tool surface is two MCP tools: `web_search(query, max_results)` and\n`fetch_url(url)`. Use them. Do not narrate; do not invent other tools.\n\nProcedure:\n  1. Read the QUESTION in the prompt.\n  2. Issue ONE `web_search` to get candidate URLs.\n  3. Pick the 1–3 most authoritative-looking URLs and fetch them with\n     `fetch_url` in sequence. Avoid clearly low-signal results (aggregator\n     spam, ad redirects).\n  4. Synthesise the relevant content from the fetched pages.\n\nTime budget: keep tool calls to 4 max per invocation. If a `fetch_url`\nreturns very little usable text, do not retry; move on.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"question\": \"<the question this run answered>\",\n    \"sources\": [{\"url\": \"<url>\", \"title\": \"<title>\"}, ...],\n    \"findings\": \"<2–6 short paragraphs of normalised text>\"\n  }\n\nYou do NOT produce the final user-facing answer. The downstream\ndistiller or formatter does that. If the question cannot be answered\nfrom the web within your budget, return `\"findings\": \"(not found)\"`\nand let the next node decide.\n\nService-failure investigations. When the QUESTION describes a degraded\nservice (a symptom plus a dependency list), research the common causes\nof that failure mode for that stack and add a `candidate_causes` key\nto your output: a list of short snake_case cause labels that MUST\ninclude one `<dep>_unavailable` entry per named dependency (e.g.\n`postgres_unavailable`, `redis_unavailable`) plus the symptom-specific\ncauses your sources support (e.g. `connection_pool_exhausted`,\n`slow_query`). Keep `findings` as the prose evidence for those causes.\n\nQUESTION: What is the current population of Paris?\n\nMEMORY HITS (2 from FAISS):\n  - [scratchpad] Find populations of London, Paris, and Berlin to identify the two closest in size\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Population comparison of London, Paris, and Berlin\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[]",
+  "started_at": 1780518766.914526,
+  "completed_at": 1780518795.5365286,
+  "retries": 0
+}

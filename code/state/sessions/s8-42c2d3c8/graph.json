@@ -1,0 +1,194 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "skill": "planner",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {},
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "planner",
+        "output": {
+          "rationale": "Extract the incident details into a structured record, validate the schema and non-empty list constraints, then format the output.",
+          "nodes": [
+            {
+              "skill": "distiller",
+              "inputs": [
+                "USER_QUERY"
+              ],
+              "metadata": {
+                "label": "d1",
+                "question": "Extract the service incident record for checkout-service with keys: service, symptom, dependencies (PostgreSQL, Redis), and candidate_causes (e.g., database connection pool exhaustion, cache latency)."
+              }
+            },
+            {
+              "skill": "critic",
+              "inputs": [
+                "n:d1"
+              ],
+              "metadata": {
+                "label": "c1",
+                "question": "Validate that the JSON contains exactly the keys: service, symptom, dependencies, candidate_causes. Ensure dependencies and candidate_causes are non-empty lists of strings."
+              }
+            },
+            {
+              "skill": "formatter",
+              "inputs": [
+                "USER_QUERY",
+                "n:c1"
+              ],
+              "metadata": {
+                "label": "out"
+              }
+            }
+          ]
+        },
+        "artifacts": [],
+        "successors": [
+          {
+            "skill": "distiller",
+            "inputs": [
+              "USER_QUERY"
+            ],
+            "metadata": {
+              "label": "d1",
+              "question": "Extract the service incident record for checkout-service with keys: service, symptom, dependencies (PostgreSQL, Redis), and candidate_causes (e.g., database connection pool exhaustion, cache latency)."
+            }
+          },
+          {
+            "skill": "critic",
+            "inputs": [
+              "n:d1"
+            ],
+            "metadata": {
+              "label": "c1",
+              "question": "Validate that the JSON contains exactly the keys: service, symptom, dependencies, candidate_causes. Ensure dependencies and candidate_causes are non-empty lists of strings."
+            }
+          },
+          {
+            "skill": "formatter",
+            "inputs": [
+              "USER_QUERY",
+              "n:c1"
+            ],
+            "metadata": {
+              "label": "out"
+            }
+          }
+        ],
+        "cost": 0.0,
+        "elapsed_s": 4.406372785568237,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:1"
+    },
+    {
+      "skill": "distiller",
+      "inputs": [
+        "USER_QUERY"
+      ],
+      "metadata": {
+        "label": "d1",
+        "question": "Extract the service incident record for checkout-service with keys: service, symptom, dependencies (PostgreSQL, Redis), and candidate_causes (e.g., database connection pool exhaustion, cache latency)."
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "distiller",
+        "output": {
+          "fields": {
+            "service": "checkout-service",
+            "symptom": "returning HTTP 503s",
+            "dependencies": [
+              "PostgreSQL",
+              "Redis"
+            ],
+            "candidate_causes": [
+              "postgresql_unavailable",
+              "redis_unavailable"
+            ]
+          },
+          "rationale": "The service, symptom, and dependencies were extracted directly from the USER_QUERY, which also provided the basis for the required candidate_causes."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 7.939709901809692,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:2"
+    },
+    {
+      "skill": "critic",
+      "inputs": [
+        "n:2"
+      ],
+      "metadata": {
+        "label": "c1",
+        "question": "Validate that the JSON contains exactly the keys: service, symptom, dependencies, candidate_causes. Ensure dependencies and candidate_causes are non-empty lists of strings."
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "critic",
+        "output": {
+          "verdict": "pass",
+          "rationale": "The output is valid according to the canonical schema."
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 3.161527395248413,
+        "provider": "groq",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:3"
+    },
+    {
+      "skill": "formatter",
+      "inputs": [
+        "USER_QUERY",
+        "n:3"
+      ],
+      "metadata": {
+        "label": "out"
+      },
+      "status": "complete",
+      "result": {
+        "success": true,
+        "agent_name": "formatter",
+        "output": {
+          "final_answer": "Service Incident Record: \n\n{ \n  \"service\": \"checkout-service\", \n  \"symptom\": \"returning HTTP 503s\", \n  \"dependencies\": [\"PostgreSQL\", \"Redis\"], \n  \"candidate_causes\": [\"PostgreSQL connection pool exhaustion\", \"Redis cache latency spike\", \"Upstream service overload\"] \n}"
+        },
+        "artifacts": [],
+        "successors": [],
+        "cost": 0.0,
+        "elapsed_s": 1.2884869575500488,
+        "provider": "gemini",
+        "error": null
+      },
+      "_result_typed": true,
+      "id": "n:4"
+    }
+  ],
+  "edges": [
+    {
+      "source": "n:2",
+      "target": "n:3"
+    },
+    {
+      "source": "n:3",
+      "target": "n:4"
+    }
+  ]
+}

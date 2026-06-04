@@ -1,0 +1,13 @@
+[run.sh] gateway ready at 20:29:26
+
+══════════════════════════════════════════════════════════════════════════════
+session s8-ffc7e0e8  ─  query: Read /nonexistent/path.txt and tell me what's in it.
+══════════════════════════════════════════════════════════════════════════════
+[n:1] planner            complete (4.3s)
+[n:2] researcher         complete (4.0s)
+[n:3] formatter          complete (3.7s)
+
+══════════════════════════════════════════════════════════════════════════════
+FINAL: I am unable to provide the content of /nonexistent/path.txt because the file could not be found.
+══════════════════════════════════════════════════════════════════════════════
+

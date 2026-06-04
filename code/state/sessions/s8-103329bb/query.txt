@@ -1,0 +1,4 @@
+Three services in our platform are degraded right now. Investigate each and tell me whether they share a single root cause or are separate incidents:
+ - checkout-service: returning HTTP 503s; depends on PostgreSQL and Redis
+ - search-service:   requests timing out; depends on Elasticsearch and PostgreSQL
+ - auth-service:     intermittent HTTP 500s; depends on PostgreSQL and an LDAP server

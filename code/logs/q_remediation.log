@@ -1,0 +1,19 @@
+[run.sh] gateway ready at 20:41:57
+
+══════════════════════════════════════════════════════════════════════════════
+session s8-78ef88d2  ─  query: Our checkout, search, and auth services are all down due to a shared PostgreSQL outage - recommend the remediation that brings them all back.
+══════════════════════════════════════════════════════════════════════════════
+[memory.read] 3 hit(s) visible to every skill this run
+[n:1] planner            complete (4.8s)
+[n:2] remediation_advisor complete (3.9s)
+[n:3] formatter          complete (4.1s)
+
+══════════════════════════════════════════════════════════════════════════════
+FINAL: To resolve the outage affecting the checkout, search, and auth services, please follow these remediation steps to restore the PostgreSQL database and re-establish service connectivity:
+
+1. Investigate the PostgreSQL primary node: Check status and logs to identify the cause of the outage.
+2. Restore database availability: If the primary node is unresponsive, trigger a failover to a standby replica or restart the PostgreSQL service.
+3. Verify connectivity: Confirm that the checkout, search, and auth application servers can successfully connect to the database.
+4. Reset service sessions: Restart 
+══════════════════════════════════════════════════════════════════════════════
+

@@ -1,0 +1,32 @@
+{
+  "node_id": "n:7",
+  "skill": "sandbox_executor",
+  "status": "complete",
+  "inputs": [
+    "n:5"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "sandbox_executor",
+    "output": {
+      "exit_code": 0,
+      "stdout": "{\"frequency\": {\"postgresql_unavailable\": 3, \"redis_unavailable\": 1, \"connection_pool_exhausted\": 3, \"oom_killed_database\": 1, \"service_overload\": 1, \"downstream_latency_spike\": 1, \"elasticsearch_unavailable\": 1, \"jvm_gc_pause\": 1, \"mapping_explosion\": 1, \"shard_misconfiguration\": 1, \"deep_pagination_latency\": 1, \"data_sync_pipeline_failure\": 1, \"ldap_unavailable\": 1, \"database_deadlock\": 1, \"ldap_timeout\": 1, \"authentication_provider_misconfiguration\": 1}, \"top_common_cause\": \"postgresql_unavailable\", \"confidence\": 1.0, \"total_services\": 3, \"verdict\": \"single root cause\"}\n",
+      "stdout_truncated": false,
+      "stderr": "",
+      "stderr_truncated": false,
+      "files_written": [],
+      "timed_out": false,
+      "cwd": "/sessions/optimistic-funny-tesla/tmp/s8sandbox-nzwv9lmd"
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.015319108963012695,
+    "provider": "",
+    "error": null
+  },
+  "prompt_sent": "You are the SandboxExecutor skill. You exist to receive Python code\nemitted by an upstream Coder node and run it in a subprocess sandbox.\n\nThis skill almost never sees the LLM: the orchestrator calls\n`sandbox.run_python(code)` directly and packages the result into the\nAgentResult. This file is here so the catalogue listing is complete and\nso a future iteration can extend the skill with LLM-level post-checks.\n\nWhen invoked through the LLM path (only used for post-mortem\nexplanations), you receive `result` in INPUTS — the stdout / stderr /\nexit-code dict the sandbox returned. Your job is to describe what\nhappened:\n\n  {\n    \"summary\": \"<one line — exit code, whether it timed out, what was printed>\"\n  }\n\nYou make no other tool calls. You do not re-execute the code.\n\nMEMORY HITS (2 from FAISS):\n  - [scratchpad] Incident analysis for checkout-service, search-service, and auth-service platform degradation\n      source: user_query\n      raw: Three services in our platform are degraded right now. Investigate each and tell me whether they share a single root cause or are separate incidents:\n - checkout-service: returning HTTP 503s; depends on PostgreSQL and Redis\n - search-service:   requests timing out; depends on Elasticsearch and PostgreSQL\n - auth-service:     intermittent HTTP 500s; depends on PostgreSQL and an LDAP server\n  - [tool_outcome] Fetch Claude Shannon's birth date, death date, and three information theory contributions from https://en.wikipedia.org/wiki/Claude_Shannon\n      source: user_query\n      raw: Fetch https://en.wikipedia.org/wiki/Claude_Shannon and tell me his birth date, death date, and three key contributions to information theory.\n\nINPUTS:\n[\n  {\n    \"id\": \"n:5\",\n    \"kind\": \"upstream\",\n    \"skill\": \"coder\",\n    \"output\": {\n      \"code\": \"import json\\nfrom collections import Counter\\n\\nservices = [\\n    {\\\"name\\\": \\\"checkout-service\\\", \\\"causes\\\": [\\\"postgresql_unavailable\\\", \\\"redis_unavailable\\\", \\\"connection_pool_exhausted\\\", \\\"oom_killed_database\\\", \\\"service_overload\\\", \\\"downstream_latency_spike\\\"]},\\n    {\\\"name\\\": \\\"search-service\\\", \\\"causes\\\": [\\\"elasticsearch_unavailable\\\", \\\"postgresql_unavailable\\\", \\\"jvm_gc_pause\\\", \\\"mapping_explosion\\\", \\\"shard_misconfiguration\\\", \\\"deep_pagination_latency\\\", \\\"data_sync_pipeline_failure\\\", \\\"connection_pool_exhausted\\\"]},\\n    {\\\"name\\\": \\\"auth-service\\\", \\\"causes\\\": [\\\"postgres_unavailable\\\", \\\"ldap_unavailable\\\", \\\"connection_pool_exhausted\\\", \\\"database_deadlock\\\", \\\"ldap_timeout\\\", \\\"authentication_provider_misconfiguration\\\"]}\\n]\\n\\n# Normalize postgres causes\\nnormalized_causes = []\\nfor s in services:\\n    s_causes = []\\n    for c in s['causes']:\\n        if c in ['postgresql_unavailable', 'postgres_unavailable']:\\n            s_causes.append('postgresql_unavailable')\\n        else:\\n            s_causes.append(c)\\n    normalized_causes.append(s_causes)\\n\\ncounts = Counter()\\nfor s_causes in normalized_causes:\\n    counts.update(s_causes)\\n\\ntop_cause, freq = counts.most_common(1)[0]\\ntotal_services = len(services)\\nconfidence = freq / total_services\\n\\n# Verdict logic: if top cause appears in all (or all but one if >= 4 services)\\nverdict = \\\"single root cause\\\" if (freq >= total_services - (1 if total_services >= 4 else 0)) else \\\"multiple independent incidents\\\"\\n\\nprint(json.dumps({\\n    \\\"frequency\\\": dict(counts),\\n    \\\"top_common_cause\\\": top_cause,\\n    \\\"confidence\\\": confidence,\\n    \\\"total_services\\\": total_services,\\n    \\\"verdict\\\": verdict\\n}))\",\n      \"summary\": \"The analysis identifies 'postgresql_unavailable' and 'connection_pool_exhausted' as the most frequent candidate causes across the three services. 'connection_pool_exhausted' appears in all three services (100% confidence), leading to a verdict of 'single root cause' suggesting a shared database connection bottleneck.\"\n    }\n  }\n]",
+  "started_at": 1780519097.2327824,
+  "completed_at": 1780519097.2481017,
+  "retries": 0
+}

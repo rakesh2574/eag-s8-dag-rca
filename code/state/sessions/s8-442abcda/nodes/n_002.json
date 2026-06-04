@@ -1,0 +1,37 @@
+{
+  "node_id": "n:2",
+  "skill": "distiller",
+  "status": "complete",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "distiller",
+    "output": {
+      "fields": {
+        "service": "checkout-service",
+        "symptom": "returning HTTP 503s",
+        "dependencies": [
+          "PostgreSQL",
+          "Redis"
+        ],
+        "candidate_causes": [
+          "postgresql_unavailable",
+          "redis_unavailable"
+        ]
+      },
+      "rationale": "The USER_QUERY explicitly provides the service name, symptom, and dependencies, from which the candidate_causes are derived."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 4.420202016830444,
+    "provider": "gemini",
+    "error": null
+  },
+  "prompt_sent": "You are the Distiller skill. You receive raw text (typically the\n`findings` of one or more Researcher nodes, or the `chunks` of a\nRetriever node) and produce a small structured record.\n\nYou make no tool calls. You do no web access. Everything you need is\nalready in the prompt under INPUTS.\n\nProcedure:\n  1. Identify what fields the user's question implies (people, dates,\n     numbers, comparisons, percentages, attributions).\n  2. Pull those fields out of the inputs.\n  3. Emit a compact JSON record. Fields with no evidence in the inputs\n     are omitted, not made up.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"fields\": { \"<field_name>\": \"<value>\", ... },\n    \"rationale\": \"<one short sentence saying which input supports each field>\"\n  }\n\nNotes:\n  - The fields dictionary is the load-bearing output; downstream\n    Formatter nodes read it.\n  - When the question is a comparison (`fastest growing`, `largest`),\n    emit a `comparison` key with `winner: <id>` and `reason: <short>`.\n  - When the question's evidence is missing, set `fields: {}` and put\n    the gap in `rationale`. Do not invent.\n\nService incident records. When the QUESTION asks for a service\nincident record, `fields` must be exactly this shape:\n\n  {\"service\": \"<name>\", \"symptom\": \"<observed failure>\",\n   \"dependencies\": [\"<dep>\", ...],\n   \"candidate_causes\": [\"<cause>\", ...]}\n\n`candidate_causes` must include one `<dep>_unavailable` entry per\nnamed dependency (lowercase, e.g. `postgres_unavailable`,\n`redis_unavailable`) plus any symptom-specific causes the inputs\nsupport. The no-invention rule still binds: if the inputs name no\ndependencies or give no usable symptom, emit the keys with what\nevidence exists and leave the unsupported lists EMPTY — a downstream\nCritic validates the record with a tool and an empty list is the\nhonest signal that the input was under-specified.\n\nA Critic node may run after you. Its evaluation will fail if you\ninvented fields or made claims unsupported by the inputs.\n\nUSER_QUERY: Produce a validated service incident record for checkout-service: symptom is \"returning HTTP 503s\"; it depends on PostgreSQL and Redis. The record MUST contain exactly the keys service, symptom, dependencies, candidate_causes, and the two lists MUST be non-empty lists of strings - validate the record before answering.\n\nQUESTION: Extract or generate a JSON incident record for checkout-service with keys: service, symptom, dependencies, candidate_causes. Ensure dependencies and candidate_causes are non-empty lists of strings.\n\nMEMORY HITS (2 from FAISS):\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[\n  {\n    \"id\": \"USER_QUERY\",\n    \"kind\": \"query\",\n    \"value\": \"Produce a validated service incident record for checkout-service: symptom is \\\"returning HTTP 503s\\\"; it depends on PostgreSQL and Redis. The record MUST contain exactly the keys service, symptom, dependencies, candidate_causes, and the two lists MUST be non-empty lists of strings - validate the record before answering.\"\n  }\n]",
+  "started_at": 1780521899.120084,
+  "completed_at": 1780521903.540287,
+  "retries": 0
+}

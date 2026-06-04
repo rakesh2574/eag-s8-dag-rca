@@ -1,0 +1,27 @@
+# Secrets — NEVER commit
+.env
+.env.local
+
+# Local runtime state — regenerated on each run.
+# NOTE: code/state/sessions/ and code/logs/ are deliberately TRACKED —
+# they are the run evidence the README cites.
+code/state/backup_s7/
+code/state/index.faiss
+code/state/index_ids.json
+code/state/memory.json
+code/sandbox/*.txt
+code/.venv/
+gateway/.venv/
+gateway/*.db
+gateway/usage.json
+
+# Build / cache artifacts
+**/__pycache__/
+**/*.pyc
+**/uv.lock
+**/.pytest_cache/
+
+# Editors
+.vscode/
+.idea/
+.DS_Store

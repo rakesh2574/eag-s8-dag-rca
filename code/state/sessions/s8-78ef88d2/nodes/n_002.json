@@ -1,0 +1,39 @@
+{
+  "node_id": "n:2",
+  "skill": "remediation_advisor",
+  "status": "complete",
+  "inputs": [
+    "USER_QUERY"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "remediation_advisor",
+    "output": {
+      "root_cause": "PostgreSQL database outage",
+      "affected_services": [
+        "checkout-service",
+        "search-service",
+        "auth-service"
+      ],
+      "remediation_steps": [
+        "Check the PostgreSQL primary node status and logs to identify the cause of the outage.",
+        "If the primary node is unresponsive, trigger a failover to the standby replica if one is provisioned; otherwise, restart the PostgreSQL service on the primary node.",
+        "Verify database connectivity from the checkout, search, and auth service application servers.",
+        "Restart the checkout-service, search-service, and auth-service pods to clear connection pool errors and re-establish database sessions.",
+        "Implement a rate-limiting policy or circuit breaker on the database connection pool to prevent future cascading failures."
+      ],
+      "verification": "Monitor the error rates for checkout, search, and auth services in the dashboard to ensure HTTP 503/500 errors have dropped to zero and latency has returned to baseline levels.",
+      "rationale": "Since all three services depend on the same PostgreSQL instance, restoring the database availability and resetting the service connection pools resolves the dependency failure for the entire platform."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 3.898872137069702,
+    "provider": "gemini",
+    "error": null
+  },
+  "prompt_sent": "You are the RemediationAdvisor skill. You receive an identified root\ncause (and, when present, the list of affected services and their\nsymptoms) and you produce the single remediation plan that resolves\nALL affected services. You produce action — what an on-call engineer\nshould do next — not analysis.\n\nYou make no tool calls. Everything you need is in USER_QUERY, the\nQUESTION, and INPUTS (typically a Coder/Distiller correlation result\nnaming the shared root cause, or the user's own statement of it).\n\nProcedure:\n  1. Identify the root cause and the affected services from the inputs.\n  2. Emit ONE remediation that addresses the root cause itself — not\n     one fix per symptom. If the inputs concluded \"multiple independent\n     incidents\", say so and emit one step per independent cause instead.\n  3. Order the steps: stop the bleeding → fix the cause → verify each\n     affected service recovered → guard against recurrence.\n  4. Keep it concrete: name the component acted on, the action taken,\n     and the health signal to watch. 3–6 steps. No essays.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"root_cause\": \"<the cause this plan addresses>\",\n    \"affected_services\": [\"<service>\", ...],\n    \"remediation_steps\": [\"<step 1>\", \"<step 2>\", ...],\n    \"verification\": \"<how to confirm all affected services recovered>\",\n    \"rationale\": \"<one sentence: why this single plan resolves them all>\"\n  }\n\nRules:\n  - Steps must be executable by an on-call engineer as written\n    (\"fail over PostgreSQL to the standby replica\", not \"fix the DB\").\n  - Do not invent infrastructure the inputs never mentioned; if a\n    detail is unknown (e.g. whether a standby exists), phrase the step\n    conditionally (\"fail over to the standby if one is provisioned,\n    otherwise restart the primary and ...\").\n  - You are not the terminal node. A Formatter renders your plan for\n    the user. Do not add successors.\n\nUSER_QUERY: Our checkout, search, and auth services are all down due to a shared PostgreSQL outage - recommend the remediation that brings them all back.\n\nQUESTION: Provide a remediation plan for checkout, search, and auth services affected by a shared PostgreSQL outage.\n\nMEMORY HITS (3 from FAISS):\n  - [scratchpad] Investigate degraded checkout-service, search-service, and auth-service for shared root cause\n      source: user_query\n      raw: Three services in our platform are degraded right now. Investigate each and tell me whether they share a single root cause or are separate incidents:\n - checkout-service: returning HTTP 503s; depends on PostgreSQL and Redis\n - search-service:   requests timing out; depends on Elasticsearch and PostgreSQL\n - auth-service:     intermittent HTTP 500s; depends on PostgreSQL and an LDAP server\n  - [scratchpad] Incident analysis for checkout-service, search-service, and auth-service platform degradation\n      source: user_query\n      raw: Three services in our platform are degraded right now. Investigate each and tell me whether they share a single root cause or are separate incidents:\n - checkout-service: returning HTTP 503s; depends on PostgreSQL and Redis\n - search-service:   requests timing out; depends on Elasticsearch and PostgreSQL\n - auth-service:     intermittent HTTP 500s; depends on PostgreSQL and an LDAP server\n  - [tool_outcome] Validated service incident record for checkout-service showing HTTP 503 errors and dependencies on PostgreSQL and Redis.\n      source: user_query\n      raw: Produce a validated service incident record for checkout-service: symptom is \"returning HTTP 503s\"; it depends on PostgreSQL and Redis. The record MUST contain exactly the keys service, symptom, dependencies, candidate_causes, and the two lists MUST be non-empty lists of strings — validate the record before answering.\n\nINPUTS:\n[\n  {\n    \"id\": \"USER_QUERY\",\n    \"kind\": \"query\",\n    \"value\": \"Our checkout, search, and auth services are all down due to a shared PostgreSQL outage - recommend the remediation that brings them all back.\"\n  }\n]",
+  "started_at": 1780519324.754894,
+  "completed_at": 1780519328.6537662,
+  "retries": 0
+}
