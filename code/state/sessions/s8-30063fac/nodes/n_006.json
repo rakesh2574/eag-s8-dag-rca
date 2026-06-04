@@ -1,0 +1,39 @@
+{
+  "node_id": "n:6",
+  "skill": "remediation_advisor",
+  "status": "complete",
+  "inputs": [
+    "n:5"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "remediation_advisor",
+    "output": {
+      "root_cause": "postgresql_unavailable",
+      "affected_services": [
+        "checkout-service",
+        "search-service",
+        "auth-service"
+      ],
+      "remediation_steps": [
+        "Check the PostgreSQL primary instance status using 'systemctl status postgresql' or the cloud provider console to confirm if the process is down.",
+        "If the primary instance is unresponsive, initiate a failover to the standby replica to restore database availability.",
+        "If no standby is available, restart the PostgreSQL service on the primary node and check the logs in '/var/log/postgresql/' for crash indicators.",
+        "Once the database is reachable, restart the 'checkout-service', 'search-service', and 'auth-service' pods to re-establish connection pools.",
+        "Monitor the error rates for all three services in the dashboard to ensure they return to baseline levels."
+      ],
+      "verification": "Confirm that all three services are reporting 200 OK status codes and that database connection error logs have ceased.",
+      "rationale": "Since all three services depend on the same PostgreSQL instance, restoring database availability resolves the connectivity errors across the entire stack."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 3.595945119857788,
+    "provider": "gemini",
+    "error": null
+  },
+  "prompt_sent": "You are the RemediationAdvisor skill. You receive an identified root\ncause (and, when present, the list of affected services and their\nsymptoms) and you produce the single remediation plan that resolves\nALL affected services. You produce action — what an on-call engineer\nshould do next — not analysis.\n\nYou make no tool calls. Everything you need is in USER_QUERY, the\nQUESTION, and INPUTS (typically a Coder/Distiller correlation result\nnaming the shared root cause, or the user's own statement of it).\n\nProcedure:\n  1. Identify the root cause and the affected services from the inputs.\n  2. Emit ONE remediation that addresses the root cause itself — not\n     one fix per symptom. If the inputs concluded \"multiple independent\n     incidents\", say so and emit one step per independent cause instead.\n  3. Order the steps: stop the bleeding → fix the cause → verify each\n     affected service recovered → guard against recurrence.\n  4. Keep it concrete: name the component acted on, the action taken,\n     and the health signal to watch. 3–6 steps. No essays.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"root_cause\": \"<the cause this plan addresses>\",\n    \"affected_services\": [\"<service>\", ...],\n    \"remediation_steps\": [\"<step 1>\", \"<step 2>\", ...],\n    \"verification\": \"<how to confirm all affected services recovered>\",\n    \"rationale\": \"<one sentence: why this single plan resolves them all>\"\n  }\n\nRules:\n  - Steps must be executable by an on-call engineer as written\n    (\"fail over PostgreSQL to the standby replica\", not \"fix the DB\").\n  - Do not invent infrastructure the inputs never mentioned; if a\n    detail is unknown (e.g. whether a standby exists), phrase the step\n    conditionally (\"fail over to the standby if one is provisioned,\n    otherwise restart the primary and ...\").\n  - You are not the terminal node. A Formatter renders your plan for\n    the user. Do not add successors.\n\nQUESTION: Provide a remediation plan based on the identified root cause from the correlator node.\n\nMEMORY HITS (2 from FAISS):\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[\n  {\n    \"id\": \"n:5\",\n    \"kind\": \"upstream\",\n    \"skill\": \"coder\",\n    \"output\": {\n      \"code\": \"import json\\nfrom collections import Counter\\n\\nservices = [\\n    {\\\"service\\\": \\\"checkout-service\\\", \\\"candidate_causes\\\": [\\\"postgresql_unavailable\\\", \\\"connection_pool_exhausted\\\"]},\\n    {\\\"service\\\": \\\"search-service\\\", \\\"candidate_causes\\\": [\\\"postgresql_unavailable\\\"]},\\n    {\\\"service\\\": \\\"auth-service\\\", \\\"candidate_causes\\\": [\\\"postgresql_unavailable\\\"]}\\n]\\n\\ntotal_services = len(services)\\ncause_counts = Counter()\\nfor s in services:\\n    for cause in s['candidate_causes']:\\n        cause_counts[cause] += 1\\n\\ntop_cause, count = cause_counts.most_common(1)[0]\\nconfidence = count / total_services\\n\\n# Verdict logic: \\\"single root cause\\\" if top cause appears in all (or all but one if >= 4 services)\\n# Here we have 3 services, so we require all 3.\\nverdict = \\\"single root cause\\\" if count >= total_services else \\\"multiple independent incidents\\\"\\n\\nprint(json.dumps({\\n    \\\"frequency\\\": dict(cause_counts),\\n    \\\"top_common_cause\\\": top_cause,\\n    \\\"total_services\\\": total_services,\\n    \\\"confidence\\\": confidence,\\n    \\\"verdict\\\": verdict\\n}))\",\n      \"summary\": \"The investigation results show that 'postgresql_unavailable' is the shared root cause, appearing in all 3 services (100% confidence). Consequently, the verdict is a 'single root cause' incident involving the PostgreSQL database.\"\n    }\n  }\n]",
+  "started_at": 1780598124.7584717,
+  "completed_at": 1780598128.3544168,
+  "retries": 0
+}

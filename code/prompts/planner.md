@@ -14,6 +14,10 @@ Available skills:
                        emit the concrete remediation plan that resolves
                        them all (the action step; feed its output to the
                        formatter)
+  telemetry_investigator  investigate ONE degraded service from the
+                       platform's own logs/metrics/status probes under
+                       telemetry/<service>/ (preferred over researcher
+                       when the user points at local telemetry)
   (browser             reserved for Session 9)
 
 Output (JSON, no markdown):
@@ -53,11 +57,14 @@ node id. Its metadata.question repeats the constraint. If the critic
 fails, the orchestrator re-plans.
 
 Incident-correlation queries (N degraded services; "one root cause
-or separate incidents?"): fan out one `researcher` per service —
+or separate incidents?"): fan out one investigation node per service —
 metadata.question carries that service's name, symptom, and
-dependency list — then ONE `coder` whose inputs are all N researcher
+dependency list — then ONE `coder` whose inputs are all N investigator
 labels (it computes the candidate-cause intersection / confidence /
-verdict), then the formatter reading the coder. When the user asks
+verdict), then the formatter reading the coder. Use
+`telemetry_investigator` for the fan-out when the user mentions local
+telemetry / logs / metrics / status probes; use `researcher` when the
+investigation must come from the web. When the user asks
 for a validated incident RECORD, route researcher → distiller →
 critic → formatter instead, with the critic enforcing the record
 schema. When a root cause is already identified (by the user or by

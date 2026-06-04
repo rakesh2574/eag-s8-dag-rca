@@ -236,6 +236,24 @@ _TOOL_CATALOG = {
             "required": ["query"],
         },
     },
+    "list_dir": {
+        "name": "list_dir",
+        "description": "List a directory inside the agent sandbox (e.g. 'telemetry/checkout-service'). Returns names and sizes.",
+        "input_schema": {
+            "type": "object",
+            "properties": {"path": {"type": "string", "default": "."}},
+            "required": [],
+        },
+    },
+    "read_file": {
+        "name": "read_file",
+        "description": "Read a UTF-8 text file from the agent sandbox (e.g. 'telemetry/checkout-service/app.log').",
+        "input_schema": {
+            "type": "object",
+            "properties": {"path": {"type": "string"}},
+            "required": ["path"],
+        },
+    },
     "validate_service_record": {
         "name": "validate_service_record",
         "description": ("Deterministically validate a service incident record "

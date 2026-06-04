@@ -1,0 +1,32 @@
+{
+  "node_id": "n:8",
+  "skill": "sandbox_executor",
+  "status": "complete",
+  "inputs": [
+    "n:5"
+  ],
+  "result": {
+    "success": true,
+    "agent_name": "sandbox_executor",
+    "output": {
+      "exit_code": 0,
+      "stdout": "{\"frequency\": {\"postgresql_unavailable\": 3, \"connection_pool_exhausted\": 1}, \"top_common_cause\": \"postgresql_unavailable\", \"total_services\": 3, \"confidence\": 1.0, \"verdict\": \"single root cause\"}\n",
+      "stdout_truncated": false,
+      "stderr": "",
+      "stderr_truncated": false,
+      "files_written": [],
+      "timed_out": false,
+      "cwd": "/var/folders/jq/p7lt3n711k37241yk772c5t80000gn/T/s8sandbox-ourj68qj"
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 0.04008913040161133,
+    "provider": "",
+    "error": null
+  },
+  "prompt_sent": "You are the SandboxExecutor skill. You exist to receive Python code\nemitted by an upstream Coder node and run it in a subprocess sandbox.\n\nThis skill almost never sees the LLM: the orchestrator calls\n`sandbox.run_python(code)` directly and packages the result into the\nAgentResult. This file is here so the catalogue listing is complete and\nso a future iteration can extend the skill with LLM-level post-checks.\n\nWhen invoked through the LLM path (only used for post-mortem\nexplanations), you receive `result` in INPUTS — the stdout / stderr /\nexit-code dict the sandbox returned. Your job is to describe what\nhappened:\n\n  {\n    \"summary\": \"<one line — exit code, whether it timed out, what was printed>\"\n  }\n\nYou make no other tool calls. You do not re-execute the code.\n\nMEMORY HITS (2 from FAISS):\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[\n  {\n    \"id\": \"n:5\",\n    \"kind\": \"upstream\",\n    \"skill\": \"coder\",\n    \"output\": {\n      \"code\": \"import json\\nfrom collections import Counter\\n\\nservices = [\\n    {\\\"service\\\": \\\"checkout-service\\\", \\\"candidate_causes\\\": [\\\"postgresql_unavailable\\\", \\\"connection_pool_exhausted\\\"]},\\n    {\\\"service\\\": \\\"search-service\\\", \\\"candidate_causes\\\": [\\\"postgresql_unavailable\\\"]},\\n    {\\\"service\\\": \\\"auth-service\\\", \\\"candidate_causes\\\": [\\\"postgresql_unavailable\\\"]}\\n]\\n\\ntotal_services = len(services)\\ncause_counts = Counter()\\nfor s in services:\\n    for cause in s['candidate_causes']:\\n        cause_counts[cause] += 1\\n\\ntop_cause, count = cause_counts.most_common(1)[0]\\nconfidence = count / total_services\\n\\n# Verdict logic: \\\"single root cause\\\" if top cause appears in all (or all but one if >= 4 services)\\n# Here we have 3 services, so we require all 3.\\nverdict = \\\"single root cause\\\" if count >= total_services else \\\"multiple independent incidents\\\"\\n\\nprint(json.dumps({\\n    \\\"frequency\\\": dict(cause_counts),\\n    \\\"top_common_cause\\\": top_cause,\\n    \\\"total_services\\\": total_services,\\n    \\\"confidence\\\": confidence,\\n    \\\"verdict\\\": verdict\\n}))\",\n      \"summary\": \"The investigation results show that 'postgresql_unavailable' is the shared root cause, appearing in all 3 services (100% confidence). Consequently, the verdict is a 'single root cause' incident involving the PostgreSQL database.\"\n    }\n  }\n]",
+  "started_at": 1780598128.3151698,
+  "completed_at": 1780598128.355259,
+  "retries": 0
+}

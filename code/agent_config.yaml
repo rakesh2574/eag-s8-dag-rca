@@ -91,7 +91,14 @@ browser:
   max_tokens: 1500
   description: STUB. Reserved for Session 9.
 
-# ── Session 8 assignment: new skill (yaml entry + prompt file only) ─────────
+# ── Session 8 assignment: new skills (yaml entry + prompt file only) ────────
+telemetry_investigator:
+  prompt: prompts/telemetry_investigator.md
+  tools_allowed: [list_dir, read_file, web_search]
+  temperature: 0.3         # evidence reading; low variance
+  max_tokens: 2000
+  description: Investigates one degraded service from the platform's own telemetry (logs, metrics, dependency status under sandbox/telemetry/<service>/), falling back to web search only to interpret unfamiliar errors. Returns the same candidate_causes record a researcher would, but grounded in system evidence.
+
 remediation_advisor:
   prompt: prompts/remediation_advisor.md
   tools_allowed: []

@@ -25,7 +25,7 @@ The loop is four lines of logic: find every `pending` node whose predecessors ar
 Every node runs through one dispatcher. A skill is just a yaml entry (`agent_config.yaml`) + a prompt file + an allowed-tools list + a temperature. The Researcher may call `web_search`/`fetch_url` (multi-turn MCP tool loop), the Critic calls `validate_service_record`, the Formatter calls nothing. Adding a skill = one yaml block + one `.md` file — the orchestrator never changes.
 
 **4. Investigation branches produce structured evidence.**
-Each researcher takes one alert ("checkout-service: HTTP 503s; depends on PostgreSQL and Redis"), researches that failure mode for that stack, and returns `candidate_causes` — snake_case labels, including one `<dep>_unavailable` per declared dependency plus whatever the sources support (`connection_pool_exhausted`, `slow_query`, …).
+Each investigator takes one alert ("checkout-service: HTTP 503s; depends on PostgreSQL and Redis") and returns `candidate_causes` — snake_case labels grounded in what it found. Two interchangeable investigator skills exist, and the Planner picks per query: `researcher` (web research on the failure mode) and `telemetry_investigator`, which reads the platform's **own telemetry** — `sandbox/telemetry/<service>/{app.log, metrics.json, status.md}` — exactly as a production deployment would read real log/metric stores. Telemetry mode is the stronger demonstration: causes come from actual log lines with onset timestamps, and dependencies whose health probes are green get *excluded* even if that failure mode is common in general. Swapping evidence sources changed `tools_allowed` and a prompt — the graph and Executor stayed identical.
 
 **5. The correlation is computed, not vibed.**
 The `coder` node embeds the three cause-lists as literals in a small Python script: count how many services list each cause → top common cause → `confidence = appearances / services` → verdict (`single root cause` vs `multiple independent incidents`). The orchestrator auto-attaches a `sandbox_executor` (subprocess, scrubbed env, 30s timeout) that actually runs it. The formatter quotes the coder; the sandbox stdout is the persisted ground truth. In our demo run the two disagreed on a tie-break — and the sandbox was right. That's the point of the diamond.
@@ -46,7 +46,8 @@ Each session writes `code/state/sessions/<sid>/`: `query.txt`, `graph.json` (the
 | skill | tools | temp | job |
 |---|---|---|---|
 | planner | — | 0.4 | writes/extends the graph as JSON |
-| researcher | web_search, fetch_url | 0.7 | investigates one service's failure mode |
+| researcher | web_search, fetch_url | 0.7 | investigates one service's failure mode (web) |
+| **telemetry_investigator** | list_dir, read_file, web_search | 0.3 | **new skill** — investigates one service from the platform's own logs/metrics/status probes |
 | retriever | search_knowledge | 0.2 | searches the indexed knowledge base |
 | distiller | — | 0.1 | extracts the canonical incident record |
 | critic | **validate_service_record** | 0.0 | tool-grounded pass/fail gate |
@@ -85,9 +86,21 @@ cd code
 streamlit run streamlit_app.py
 ```
 
-Paste your alerts (one per line, `service: symptom; depends on A and B`), hit **Run RCA**, and watch the nodes complete live. The app then renders the DAG, the per-node latency table with the max-vs-sum proof, critic verdicts, the coder's script + sandbox stdout, and the final answer. It can also re-open any past session.
+Paste your alerts (one per line, `service: symptom; depends on A and B`), pick the evidence source — **platform telemetry** (reads the synthetic incident under `sandbox/telemetry/`) or **web research** — hit **Run RCA**, and watch the nodes complete live. The app then renders the DAG, the per-node latency table with the max-vs-sum proof, critic verdicts, the coder's script + sandbox stdout, and the final answer. It can also re-open any past session.
 
 ### Run from the CLI
+
+Telemetry-grounded RCA (reads the synthetic incident under `sandbox/telemetry/`):
+
+```bash
+python3 flow.py 'Three services in our platform are degraded right now. Investigate each using our local platform telemetry under telemetry/<service-name>/ (app.log, metrics.json, status.md) and tell me whether they share a single root cause or are separate incidents:
+ - checkout-service: returning HTTP 503s; depends on PostgreSQL and Redis
+ - search-service:   requests timing out; depends on Elasticsearch and PostgreSQL
+ - auth-service:     intermittent HTTP 500s; depends on PostgreSQL and an LDAP server
+Use web search only to interpret unfamiliar errors.'
+```
+
+Web-research RCA (same graph shape; the Planner picks `researcher` branches instead):
 
 ```bash
 python3 flow.py 'Three services in our platform are degraded right now. Investigate each and tell me whether they share a single root cause or are separate incidents:
@@ -110,7 +123,20 @@ Other things it handles (assignment base queries): `Say hello.` (2-node minimum 
 
 ## Measured results (from the traces in `code/state/sessions/`)
 
-**Parallel fan-out = max, not sum** — outage run `s8-103329bb`, planner + all three researchers in one uninterrupted window:
+**Telemetry-grounded RCA (the flagship run)** — `s8-71958b0a`, three `telemetry_investigator` branches reading the synthetic incident under `sandbox/telemetry/`:
+
+```
+checkout  onset 09:14:02Z  causes [postgresql_unavailable, connection_pool_exhausted]
+search    onset 09:14:11Z  causes [postgresql_unavailable]          (ES probes green → excluded)
+auth      onset 09:14:15Z  causes [postgresql_unavailable]          (LDAP bind 11ms → excluded)
+sandbox:  {"top_common_cause": "postgresql_unavailable", "confidence": 1.0,
+           "verdict": "single root cause"}
+parallel layer: sum 60.3s → max 24.6s · whole run 36.4s end-to-end
+```
+
+The onset timestamps line up within 13 seconds — the cascade is visible in the evidence itself, and every cause traces to a specific log line persisted in the investigator's NodeState.
+
+**Parallel fan-out = max, not sum (web-research mode)** — outage run `s8-103329bb`, planner + all three researchers in one uninterrupted window:
 
 ```
 n:1  planner                start  0.00s   elapsed  6.18s
@@ -143,6 +169,9 @@ Full logs for every run: `code/logs/*.log`.
 prompts/coder.md                rewritten (was the stub)
 prompts/critic.md               rewritten — verdicts grounded in the tool
 prompts/remediation_advisor.md  NEW skill prompt
+prompts/telemetry_investigator.md  NEW skill prompt (+ skills.py entries for
+                                the existing list_dir/read_file MCP tools;
+                                synthetic incident data in sandbox/telemetry/)
 prompts/planner.md              skill-list line + incident decomposition guidance
 prompts/researcher.md           candidate_causes guidance for failure investigations
 prompts/distiller.md            canonical incident-record schema

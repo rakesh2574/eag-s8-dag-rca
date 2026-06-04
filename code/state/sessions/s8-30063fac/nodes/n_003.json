@@ -1,0 +1,40 @@
+{
+  "node_id": "n:3",
+  "skill": "telemetry_investigator",
+  "status": "complete",
+  "inputs": [],
+  "result": {
+    "success": true,
+    "agent_name": "telemetry_investigator",
+    "output": {
+      "question": "Investigate telemetry/search-service/ (app.log, metrics.json, status.md) for request timeouts and dependency health (Elasticsearch, PostgreSQL).",
+      "service": "search-service",
+      "symptom": "request timeouts",
+      "dependencies": [
+        "Elasticsearch",
+        "PostgreSQL"
+      ],
+      "evidence": [
+        "2026-06-04T09:14:11Z ERROR search-service metadata-db: connect timeout to db-primary.internal:5432 after 10000ms",
+        "2026-06-04T09:14:21Z ERROR search-service req=88c2 GET /api/search?q=tv -> 504 upstream timeout (metadata join timed out)",
+        "PostgreSQL (db-primary.internal:5432) status is FAILING since 2026-06-04T09:14:11Z",
+        "Elasticsearch probes healthy throughout with p99 latency ~38ms"
+      ],
+      "onset": "2026-06-04T09:14:11Z",
+      "candidate_causes": [
+        "postgresql_unavailable"
+      ],
+      "findings": "The search-service is experiencing request timeouts due to persistent connection failures with the PostgreSQL metadata database. Elasticsearch probes and metrics remain healthy throughout the incident. The telemetry confirms the issue is isolated to the PostgreSQL dependency."
+    },
+    "artifacts": [],
+    "successors": [],
+    "cost": 0.0,
+    "elapsed_s": 16.726532697677612,
+    "provider": "gemini",
+    "error": null
+  },
+  "prompt_sent": "You are the TelemetryInvestigator skill. You investigate ONE degraded\nservice using the platform's own telemetry, and return structured\nevidence the correlation step can compute over. You are the on-call\nview of a single service: you do NOT see other services' telemetry and\nyou do NOT conclude platform-wide root causes — that is the coder's job\ndownstream.\n\nYour tools:\n  - `list_dir(path)`  — list a sandbox directory\n  - `read_file(path)` — read a sandbox file\n  - `web_search(query, max_results)` — ONLY to interpret an unfamiliar\n    error string; never as the primary evidence source.\n\nThe telemetry for your service lives under `telemetry/<service-name>/`:\n  app.log       recent application log lines\n  metrics.json  windowed counters (error rates, dependency failures)\n  status.md     the service's own dependency health probes\n\nProcedure (budget: at most 5 tool calls — be economical):\n  1. Read the QUESTION: it names your service, its symptom, and its\n     declared dependencies.\n  2. `read_file(\"telemetry/<service>/app.log\")` and\n     `read_file(\"telemetry/<service>/status.md\")`; read metrics.json\n     if you still need corroboration. (`list_dir` first only if the\n     service directory name is uncertain.)\n  3. From the EVIDENCE — not from priors — decide which dependencies\n     are implicated. A dependency with failing probes or repeated\n     errors in the log is implicated; a dependency with healthy probes\n     is NOT, even if that failure mode is common in general.\n  4. Build `candidate_causes`: snake_case labels. Include\n     `<dep>_unavailable` ONLY for dependencies the evidence implicates;\n     include symptom-specific causes the log actually shows\n     (e.g. `connection_pool_exhausted`, `statement_timeout`). Do not\n     pad the list with generic possibilities the telemetry rules out.\n  5. Note the onset timestamp if the log/metrics show one.\n\nOutput schema (JSON, no prose, no markdown fences):\n\n  {\n    \"question\": \"<the question this run answered>\",\n    \"service\": \"<service name>\",\n    \"symptom\": \"<observed symptom>\",\n    \"dependencies\": [\"<declared dep>\", ...],\n    \"evidence\": [\"<log line or probe finding that matters>\", ...],\n    \"onset\": \"<ISO timestamp or 'unknown'>\",\n    \"candidate_causes\": [\"<snake_case cause>\", ...],\n    \"findings\": \"<2-4 sentences: what the telemetry shows for THIS service>\"\n  }\n\nHealthy dependencies are evidence too: say so in `findings` (e.g.\n\"Redis probes healthy throughout\"). If the telemetry directory is\nmissing or empty, return `\"findings\": \"(no telemetry found)\"` with an\nempty candidate_causes — do not invent.\n\nQUESTION: Investigate telemetry/search-service/ (app.log, metrics.json, status.md) for request timeouts and dependency health (Elasticsearch, PostgreSQL).\n\nMEMORY HITS (2 from FAISS):\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n  - [tool_outcome] Querying population data for London, Paris, and Berlin to find size proximity.\n      source: user_query\n      raw: Find the populations of London, Paris, Berlin and tell me which two are closest in size.\n\nINPUTS:\n[]",
+  "started_at": 1780598103.8660843,
+  "completed_at": 1780598120.592617,
+  "retries": 0
+}

@@ -1,0 +1,10 @@
+2026-06-04T09:11:02Z INFO  checkout-service req=9f31 GET /api/cart -> 200 latency_ms=38
+2026-06-04T09:12:44Z INFO  checkout-service req=a2c8 POST /api/checkout -> 200 latency_ms=51
+2026-06-04T09:14:02Z ERROR checkout-service db: could not connect to postgres at db-primary.internal:5432 - connection refused
+2026-06-04T09:14:04Z ERROR checkout-service db: could not connect to postgres at db-primary.internal:5432 - connection refused
+2026-06-04T09:14:05Z WARN  checkout-service HikariPool-1 connection pool exhausted (32/32 in use, 47 threads waiting)
+2026-06-04T09:14:06Z ERROR checkout-service req=b771 POST /api/checkout -> 503 Service Unavailable (no database connection)
+2026-06-04T09:14:09Z ERROR checkout-service req=b794 POST /api/checkout -> 503 Service Unavailable (no database connection)
+2026-06-04T09:15:30Z INFO  checkout-service redis: PING ok latency_ms=1 hit_rate=0.94
+2026-06-04T09:16:12Z ERROR checkout-service db: could not connect to postgres at db-primary.internal:5432 - connection refused
+2026-06-04T09:16:13Z ERROR checkout-service req=c1135 POST /api/checkout -> 503 Service Unavailable (no database connection)

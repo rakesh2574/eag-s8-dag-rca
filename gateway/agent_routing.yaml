@@ -24,3 +24,4 @@ sandbox_executor: github
 coder: gemini
 browser: gemini
 remediation_advisor: gemini
+telemetry_investigator: gemini

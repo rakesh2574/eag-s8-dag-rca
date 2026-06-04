@@ -46,7 +46,8 @@ def main() -> None:
         for s in sorted(states, key=lambda x: x["started_at"]):
             st, ct = s["started_at"], s["completed_at"]
             print(f"{s['node_id']:6s} {s['skill']:20s} {st-t0:9.2f}s {ct-st:8.2f}s {ct-t0:10.2f}s")
-        par = [s for s in states if s["skill"] == "researcher"]
+        par = [s for s in states
+               if s["skill"] in ("researcher", "telemetry_investigator")]
         if len(par) > 1:
             els = [s["completed_at"] - s["started_at"] for s in par]
             wall = max(s["completed_at"] for s in par) - min(s["started_at"] for s in par)

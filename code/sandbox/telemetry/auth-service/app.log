@@ -1,0 +1,8 @@
+2026-06-04T09:12:09Z INFO  auth-service req=33d1 POST /api/login -> 200 latency_ms=88 ldap_bind_ms=12
+2026-06-04T09:14:15Z ERROR auth-service sessions-db: FATAL: the database system is not accepting connections (db-primary.internal:5432)
+2026-06-04T09:14:16Z ERROR auth-service req=41be POST /api/login -> 500 Internal Server Error (session store unavailable)
+2026-06-04T09:14:48Z INFO  auth-service req=41f7 POST /api/login -> 200 latency_ms=95 (served from cached session)
+2026-06-04T09:15:21Z ERROR auth-service sessions-db: FATAL: the database system is not accepting connections (db-primary.internal:5432)
+2026-06-04T09:15:22Z ERROR auth-service req=4377 POST /api/login -> 500 Internal Server Error (session store unavailable)
+2026-06-04T09:16:05Z INFO  auth-service ldap: bind ok ldap-1.internal:636 latency_ms=11
+2026-06-04T09:17:40Z ERROR auth-service req=46aa POST /api/login -> 500 Internal Server Error (session store unavailable)

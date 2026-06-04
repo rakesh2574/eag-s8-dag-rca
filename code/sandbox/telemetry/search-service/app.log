@@ -1,0 +1,8 @@
+2026-06-04T09:10:18Z INFO  search-service req=771a GET /api/search?q=shoes -> 200 latency_ms=64 es_took_ms=21
+2026-06-04T09:13:55Z INFO  search-service es-cluster health=green shards_active=100%
+2026-06-04T09:14:11Z ERROR search-service metadata-db: connect timeout to db-primary.internal:5432 after 10000ms
+2026-06-04T09:14:21Z ERROR search-service req=88c2 GET /api/search?q=tv -> 504 upstream timeout (metadata join timed out)
+2026-06-04T09:14:40Z ERROR search-service metadata-db: connect timeout to db-primary.internal:5432 after 10000ms
+2026-06-04T09:15:02Z ERROR search-service req=8a01 GET /api/search?q=phone -> 504 upstream timeout (metadata join timed out)
+2026-06-04T09:15:44Z INFO  search-service es-cluster health=green query_p99_ms=38
+2026-06-04T09:17:23Z ERROR search-service metadata-db: connect timeout to db-primary.internal:5432 after 10000ms

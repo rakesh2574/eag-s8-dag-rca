@@ -1,0 +1,45 @@
+
+══════════════════════════════════════════════════════════════════════════════
+session s8-71958b0a  ─  query: Three services in our platform are degraded right now. Investigate each using our local platform telemetry under telemetry/<service-name>/ (app.log, metrics.json, status.md) and tell me whether they share a single root cause or are separate incidents:
+ - checkout-service: returning HTTP 503s; depends on PostgreSQL and Redis
+ - search-service:   requests timing out; depends on Elasticsearch and PostgreSQL
+ - auth-service:     intermittent HTTP 500s; depends on PostgreSQL and an LDAP server
+Use web search only to interpret unfamiliar errors.
+══════════════════════════════════════════════════════════════════════════════
+[memory.read] 2 hit(s) visible to every skill this run
+[n:1] planner            complete (4.9s)
+[06/04/26 18:20:13] INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:727
+                             ListToolsRequest                                   
+                    INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+[06/04/26 18:20:17] INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:727
+                             ListToolsRequest                                   
+                    INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+[06/04/26 18:20:21] INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:727
+                             ListToolsRequest                                   
+                    INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+                    INFO     Processing request of type            server.py:727
+                             CallToolRequest                                    
+[n:2] telemetry_investigator complete (24.6s)
+[n:3] telemetry_investigator complete (16.0s)
+[n:4] telemetry_investigator complete (19.8s)
+[n:5] coder              complete (4.2s)
+[n:6] formatter          complete (2.7s)
+[n:7] sandbox_executor   complete (0.0s)
+
+══════════════════════════════════════════════════════════════════════════════
+FINAL: Based on an analysis of the platform telemetry, the degradation of the checkout-service, search-service, and auth-service is caused by a single root cause. All three services are reporting 'postgresql_unavailable' as a primary issue, indicating that the PostgreSQL database is the common point of failure affecting your platform.
+══════════════════════════════════════════════════════════════════════════════
+

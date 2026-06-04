@@ -89,7 +89,8 @@ def render_session(sess: dict) -> None:
         } for n in sorted(nodes, key=lambda x: x["started_at"])]
         st.dataframe(rows, use_container_width=True)
 
-        par = [n for n in nodes if n["skill"] == "researcher"]
+        par = [n for n in nodes
+               if n["skill"] in ("researcher", "telemetry_investigator")]
         if len(par) > 1:
             els = [n["completed_at"] - n["started_at"] for n in par]
             wall = max(n["completed_at"] for n in par) - min(n["started_at"] for n in par)
@@ -155,6 +156,14 @@ st.sidebar.caption("Gateway V8 auto-starts on the first run (a one-time ~15s wai
 if mode == "Batch of alerts (RCA)":
     st.markdown("One alert per line — `service: symptom; depends on A and B`")
     alerts = st.text_area("Degraded services", DEFAULT_ALERTS, height=120)
+    source = st.radio(
+        "Evidence source",
+        ["Platform telemetry (logs · metrics · status probes)", "Web research"],
+        horizontal=True,
+        help="Telemetry mode reads sandbox/telemetry/<service>/ — the synthetic "
+             "incident data — exactly how a production deployment would read "
+             "real log/metric stores. Web mode researches the failure modes online.",
+    )
     ask_remedy = st.checkbox("Also ask for a remediation recommendation", value=False)
     if st.button("Run RCA", type="primary"):
         lines = [a.strip() for a in alerts.splitlines() if a.strip()]
@@ -167,6 +176,10 @@ if mode == "Batch of alerts (RCA)":
                 f"and tell me whether they share a single root cause or are separate incidents:\n"
                 + "\n".join(f" - {a}" for a in lines)
             )
+            if source.startswith("Platform telemetry"):
+                query += ("\nInvestigate each service using our local platform telemetry "
+                          "under telemetry/<service-name>/ (app.log, metrics.json, "
+                          "status.md); use web search only to interpret unfamiliar errors.")
             if ask_remedy:
                 query += ("\nIf there is a single shared root cause, also recommend the "
                           "remediation that resolves all affected services.")
